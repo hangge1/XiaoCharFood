@@ -55,6 +55,13 @@ function getMeals() {
   return read(STORAGE_KEYS.meals, [])
 }
 
+function parseCompanions(value) {
+  return `${value || ''}`
+    .split(/[、,，\s]+/)
+    .map(item => item.trim())
+    .filter(Boolean)
+}
+
 function saveMeal(input) {
   const meals = getMeals()
   const time = nowString()
@@ -65,6 +72,7 @@ function saveMeal(input) {
     mealType: input.mealType || '',
     title: input.title || '',
     note: input.note || '',
+    companion: input.companion || '',
     tags: input.tags || [],
     indulgent: Boolean(input.indulgent),
     planId: input.planId || '',
@@ -82,6 +90,18 @@ function deleteMeal(id) {
   const next = getMeals().filter(item => item.id !== id)
   write(STORAGE_KEYS.meals, next)
   return next
+}
+
+function getCompanionOptions(limit = 8) {
+  const counts = {}
+  getMeals().forEach(meal => {
+    parseCompanions(meal.companion).forEach(name => {
+      counts[name] = (counts[name] || 0) + 1
+    })
+  })
+  return Object.keys(counts)
+    .sort((a, b) => counts[b] - counts[a] || a.localeCompare(b))
+    .slice(0, limit)
 }
 
 function getMealsByDate(date) {
@@ -270,6 +290,7 @@ module.exports = {
   getMeals,
   saveMeal,
   deleteMeal,
+  getCompanionOptions,
   getMealsByDate,
   getRecentMeals,
   getWeekReview,

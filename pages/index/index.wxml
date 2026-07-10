@@ -47,6 +47,19 @@
       <view wx:if="{{editingMealId}}" class="edit-badge">编辑中</view>
     </view>
     <input class="input" value="{{form.title}}" placeholder="吃了什么？例如：烧烤、番茄牛肉汤" adjust-position="{{false}}" bindinput="onTitleInput" />
+    <view class="companion-field">
+      <view class="companion-icon">👥</view>
+      <input class="companion-input" value="{{form.companion}}" placeholder="和谁一起吃？例如：对象、爸妈、同事" adjust-position="{{false}}" bindinput="onCompanionInput" />
+    </view>
+    <view wx:if="{{companionOptions.length > 0}}" class="companion-list">
+      <view
+        wx:for="{{companionOptions}}"
+        wx:key="*this"
+        class="companion-chip {{form.companion.indexOf(item) >= 0 ? 'active' : ''}}"
+        data-name="{{item}}"
+        bindtap="selectCompanion"
+      ><text class="chip-dot">＋</text>{{item}}</view>
+    </view>
     <input class="input feeling-input" value="{{form.note}}" placeholder="一句话感受，可选" adjust-position="{{false}}" bindinput="onNoteInput" />
     <view class="tag-label">常用描述</view>
     <view class="chip-list form-gap">
@@ -98,6 +111,7 @@
       <view>
         <view class="meal-title">{{item.title}}</view>
         <view class="meta">{{item.mealType}} · {{item.date}} {{item.time || ''}}</view>
+        <view wx:if="{{item.companion}}" class="companion-meta">👥 {{item.companion}}</view>
       </view>
       <view class="meal-actions">
         <view class="icon-action edit" bindtap="editMeal" data-id="{{item.id}}">✎</view>

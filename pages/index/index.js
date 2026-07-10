@@ -14,6 +14,7 @@ Page({
     mealOptions: MEAL_OPTIONS,
     tags: TAGS,
     todayMeals: [],
+    companionOptions: [],
     review: {
       mealCount: 0,
       outsideCount: 0,
@@ -30,6 +31,7 @@ Page({
     form: {
       mealType: '晚餐',
       title: '',
+      companion: '',
       note: '',
       tags: [],
       indulgent: false
@@ -47,6 +49,7 @@ Page({
     this.setData({
       today,
       todayMeals,
+      companionOptions: store.getCompanionOptions(),
       review: store.getWeekReview(),
       profile,
       nicknameDraft: profile.nickname || this.data.nicknameDraft
@@ -95,6 +98,20 @@ Page({
     })
   },
 
+  onCompanionInput(e) {
+    this.setData({
+      'form.companion': e.detail.value
+    })
+  },
+
+  selectCompanion(e) {
+    this.hideKeyboard()
+    const name = e.currentTarget.dataset.name
+    this.setData({
+      'form.companion': this.appendCompanion(this.data.form.companion, name)
+    })
+  },
+
   toggleTag(e) {
     this.hideKeyboard()
     const tag = e.currentTarget.dataset.tag
@@ -125,6 +142,17 @@ Page({
     return current ? `${current} · ${token}` : token
   },
 
+  appendCompanion(value, name) {
+    const parts = `${value || ''}`
+      .split(/[、,，\s]+/)
+      .map(item => item.trim())
+      .filter(Boolean)
+    if (name && !parts.includes(name)) {
+      parts.push(name)
+    }
+    return parts.join('、')
+  },
+
   resetMealForm() {
     this.setData({
       editingMealId: '',
@@ -132,6 +160,7 @@ Page({
       form: {
         mealType: '晚餐',
         title: '',
+        companion: '',
         note: '',
         tags: [],
         indulgent: false
@@ -141,7 +170,7 @@ Page({
 
   saveMeal() {
     const form = this.data.form
-    if (!form.mealType && !form.title && !form.note && form.tags.length === 0) {
+    if (!form.mealType && !form.title && !form.note && !form.companion && form.tags.length === 0) {
       wx.showToast({ title: '随便写一点也可以', icon: 'none' })
       return
     }
@@ -158,6 +187,7 @@ Page({
       createdAt: this.data.editingMealMeta && this.data.editingMealMeta.createdAt,
       mealType: form.mealType,
       title,
+      companion: form.companion,
       note: form.note,
       tags,
       indulgent: form.indulgent
@@ -184,6 +214,7 @@ Page({
       form: {
         mealType: meal.mealType || '晚餐',
         title: meal.title || '',
+        companion: meal.companion || '',
         note: meal.note || '',
         tags,
         indulgent: Boolean(meal.indulgent || (meal.tags || []).includes('放纵餐'))
