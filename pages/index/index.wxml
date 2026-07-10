@@ -23,14 +23,17 @@
     </view>
     <view class="meal-grid">
       <view
-        wx:for="{{mealTypes}}"
-        wx:key="*this"
-        class="meal-cell {{form.mealType === item ? 'active' : ''}}"
+        wx:for="{{mealOptions}}"
+        wx:key="type"
+        class="meal-cell {{item.accent}} {{form.mealType === item.type ? 'active' : ''}}"
         bindtap="selectMealType"
-        data-type="{{item}}"
+        data-type="{{item.type}}"
       >
-        <view>{{item}}</view>
-        <view class="meta">点选预填</view>
+        <view class="meal-art">
+          <view class="meal-glow"></view>
+          <view class="meal-icon">{{item.icon}}</view>
+        </view>
+        <view class="meal-name">{{item.type}}</view>
       </view>
     </view>
   </view>

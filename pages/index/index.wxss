@@ -48,27 +48,109 @@
 .meal-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12rpx;
-  margin-top: 20rpx;
+  gap: 14rpx;
+  margin-top: 22rpx;
 }
 
 .meal-cell {
-  min-height: 104rpx;
-  padding: 16rpx 10rpx;
+  position: relative;
+  min-height: 172rpx;
+  padding: 14rpx 10rpx 16rpx;
   border: 1rpx solid #DDE4D7;
-  border-radius: 20rpx;
+  border-radius: 24rpx;
   background: #F7F8F3;
+  overflow: hidden;
   text-align: center;
   box-sizing: border-box;
   transform: rotate(-1deg);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.meal-cell::after {
+  content: "";
+  position: absolute;
+  right: 12rpx;
+  top: 12rpx;
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: -22rpx 16rpx 0 rgba(255, 255, 255, 0.48);
+}
+
+.meal-cell.morning {
+  background: #FFF2CD;
+  border-color: #F0C879;
+}
+
+.meal-cell.noon {
+  background: #E7F2DB;
+  border-color: #BAD59B;
+  transform: rotate(1deg);
+}
+
+.meal-cell.night {
+  background: #E5EFF8;
+  border-color: #AFCBE2;
+  transform: rotate(-2deg);
+}
+
+.meal-cell.snack {
+  background: #FCE5E4;
+  border-color: #E8B7B4;
+  transform: rotate(2deg);
+}
+
+.meal-art {
+  position: relative;
+  width: 104rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10rpx;
+}
+
+.meal-glow {
+  position: absolute;
+  width: 82rpx;
+  height: 58rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10rpx 0 rgba(32, 37, 31, 0.06);
+}
+
+.meal-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 58rpx;
+  line-height: 1;
+  transform: rotate(-3deg);
+}
+
+.meal-name {
+  position: relative;
+  z-index: 1;
+  color: #344033;
+  font-family: "Comic Sans MS", "PingFang SC", "Microsoft YaHei UI", sans-serif;
+  font-size: 28rpx;
+  font-weight: 800;
+  line-height: 36rpx;
 }
 
 .meal-cell.active {
   border-color: #2F7D68;
-  background: #DDEFE8;
   color: #2F7D68;
-  font-weight: 650;
+  box-shadow: 0 12rpx 0 rgba(47, 125, 104, 0.16);
   transform: rotate(1deg) translateY(-4rpx);
+}
+
+.meal-cell.active .meal-glow {
+  background: #FFFFFF;
+}
+
+.meal-cell.active .meal-name {
+  color: #2F7D68;
 }
 
 .form-gap {

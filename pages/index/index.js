@@ -1,12 +1,17 @@
 const store = require('../../utils/store.js')
 
-const MEAL_TYPES = ['早餐', '午餐', '晚餐', '加餐']
+const MEAL_OPTIONS = [
+  { type: '早餐', icon: '🥣', accent: 'morning' },
+  { type: '午餐', icon: '🍱', accent: 'noon' },
+  { type: '晚餐', icon: '🍲', accent: 'night' },
+  { type: '加餐', icon: '🍓', accent: 'snack' }
+]
 const TAGS = ['外食', '清淡', '偏油', '蔬菜少', '吃撑了', '满意']
 
 Page({
   data: {
     today: '',
-    mealTypes: MEAL_TYPES,
+    mealOptions: MEAL_OPTIONS,
     tags: TAGS,
     todayMeals: [],
     review: {
