@@ -165,6 +165,9 @@ function saveRestaurant(input) {
     id: input.id || createId('restaurant'),
     name: input.name || '',
     averageCost: input.averageCost || '',
+    address: input.address || '',
+    latitude: input.latitude || null,
+    longitude: input.longitude || null,
     sceneTags: input.sceneTags || [],
     revisitIntent: input.revisitIntent || '还想再去',
     note: input.note || '',
@@ -212,11 +215,40 @@ function getRestaurantSummaries(filters = {}) {
       const keyword = (filters.keyword || '').trim()
       const matchKeyword = !keyword ||
         restaurant.name.includes(keyword) ||
+        restaurant.address.includes(keyword) ||
         restaurant.note.includes(keyword) ||
         (restaurant.latestVisit && `${restaurant.latestVisit.dishes} ${restaurant.latestVisit.note}`.includes(keyword))
       const matchRevisit = !filters.revisitIntent || restaurant.revisitIntent === filters.revisitIntent
       return matchKeyword && matchRevisit
     })
+}
+
+function distanceKm(from, to) {
+  if (!from || !to || from.latitude == null || from.longitude == null || to.latitude == null || to.longitude == null) {
+    return null
+  }
+  const radius = 6371
+  const toRad = value => value * Math.PI / 180
+  const dLat = toRad(Number(to.latitude) - Number(from.latitude))
+  const dLng = toRad(Number(to.longitude) - Number(from.longitude))
+  const lat1 = toRad(Number(from.latitude))
+  const lat2 = toRad(Number(to.latitude))
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1) * Math.cos(lat2) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2)
+  return radius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
+function getNearbyRestaurants(center, radiusKm = 5) {
+  return getRestaurantSummaries()
+    .map(restaurant => {
+      const distance = distanceKm(center, restaurant)
+      return Object.assign({}, restaurant, {
+        distanceKm: distance
+      })
+    })
+    .filter(restaurant => restaurant.distanceKm != null && restaurant.distanceKm <= radiusKm)
+    .sort((a, b) => a.distanceKm - b.distanceKm)
 }
 
 function clearAll() {
@@ -250,6 +282,8 @@ module.exports = {
   getRestaurantVisits,
   saveRestaurantVisit,
   getRestaurantSummaries,
+  getNearbyRestaurants,
+  distanceKm,
   clearAll,
   getProfile,
   saveProfile

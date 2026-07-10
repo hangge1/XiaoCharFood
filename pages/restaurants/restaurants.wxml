@@ -11,6 +11,7 @@
     <view class="mode-switch">
       <view class="mode-item {{mode === 'search' ? 'active' : ''}}" data-mode="search" bindtap="setMode">找去过的店</view>
       <view class="mode-item {{mode === 'create' ? 'active' : ''}}" data-mode="create" bindtap="setMode">记录新餐厅</view>
+      <view class="mode-item {{mode === 'map' ? 'active' : ''}}" bindtap="locateNearby">附近地图</view>
     </view>
   </view>
 
@@ -27,6 +28,13 @@
     <view class="section-title compact">记录新餐厅</view>
     <view class="subtitle">像贴一张小票：先写店名就能保存，其他信息可以随手补。</view>
     <input class="input" placeholder="店名" value="{{form.name}}" data-key="name" bindinput="onInput" />
+    <view class="location-picker" bindtap="chooseRestaurantLocation">
+      <view>
+        <view class="location-title">{{form.address || '从地图选择餐厅地址'}}</view>
+        <view class="meta">{{form.latitude ? '已保存经纬度，之后可在附近地图显示' : '也可以先手动写店名，地址稍后补'}}</view>
+      </view>
+      <view class="location-action">选择</view>
+    </view>
     <input class="input gap-small" placeholder="人均，例如 128" value="{{form.averageCost}}" data-key="averageCost" bindinput="onInput" />
     <input class="input gap-small" placeholder="这次点了什么？" value="{{form.dishes}}" data-key="dishes" bindinput="onInput" />
     <textarea class="textarea gap-small" placeholder="一句话评价，可选" value="{{form.note}}" data-key="note" bindinput="onInput" />
@@ -42,6 +50,33 @@
     <view class="primary-button gap" bindtap="saveRestaurant">保存这家店</view>
   </view>
 
+  <view wx:if="{{mode === 'map'}}" class="card map-card">
+    <view class="row">
+      <view>
+        <view class="section-title compact">附近 5km 去过的店</view>
+        <view class="subtitle">地图只显示保存过地址的餐厅。</view>
+      </view>
+      <view class="sticker green">{{nearbyRestaurants.length}} 家</view>
+    </view>
+    <map
+      class="nearby-map"
+      latitude="{{mapCenter.latitude}}"
+      longitude="{{mapCenter.longitude}}"
+      scale="13"
+      markers="{{mapMarkers}}"
+      circles="{{mapCircles}}"
+      show-location
+    ></map>
+    <view wx:if="{{nearbyRestaurants.length === 0}}" class="empty map-empty">附近 5km 暂时没有保存过地址的餐厅。</view>
+    <view wx:for="{{nearbyRestaurants}}" wx:key="id" class="nearby-row" data-id="{{item.id}}" bindtap="openRestaurantLocation">
+      <view>
+        <view class="restaurant-title small">{{item.name}}</view>
+        <view class="meta">{{item.distanceText}} · {{item.address || '地址未记录'}}</view>
+      </view>
+      <view class="location-action">打开</view>
+    </view>
+  </view>
+
   <view class="section-title">回味清单</view>
   <view wx:if="{{restaurants.length === 0}}" class="empty card">还没有餐厅记忆。下次吃到不错的店，可以先简单记下来。</view>
   <view wx:for="{{restaurants}}" wx:key="id" class="card">
@@ -49,8 +84,9 @@
       <view>
         <view class="restaurant-title">{{item.name}}</view>
         <view class="meta">人均 {{item.averageCost || '未记录'}} · {{item.revisitIntent}}</view>
+        <view wx:if="{{item.address}}" class="meta">{{item.address}}</view>
       </view>
-      <view class="visit-count">{{item.visitCount}} 次</view>
+      <view class="visit-count" data-id="{{item.id}}" bindtap="openRestaurantLocation">{{item.latitude ? '地图' : item.visitCount + ' 次'}}</view>
     </view>
     <view wx:if="{{item.note}}" class="subtitle gap-small">{{item.note}}</view>
     <view wx:if="{{item.latestVisit}}" class="visit-box">

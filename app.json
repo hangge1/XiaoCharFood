@@ -45,6 +45,11 @@
   },
   "style": "v2",
   "componentFramework": "glass-easel",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于显示你附近 5km 内去过的餐厅"
+    }
+  },
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents"
 }

@@ -13,7 +13,7 @@
 
 .mode-switch {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 12rpx;
 }
 
@@ -26,6 +26,7 @@
   color: #5D675B;
   background: #EEF3EA;
   font-weight: 650;
+  font-size: 26rpx;
   box-shadow: inset 0 -4rpx 0 rgba(32, 37, 31, 0.04);
 }
 
@@ -44,6 +45,11 @@
   background: #F5FBF7;
 }
 
+.map-card {
+  border-color: #A8D2C3;
+  background: #F5FBF7;
+}
+
 .gap {
   margin-top: 20rpx;
 }
@@ -57,6 +63,10 @@
   font-weight: 700;
 }
 
+.restaurant-title.small {
+  font-size: 30rpx;
+}
+
 .visit-count {
   flex: 0 0 auto;
   color: #2F7D68;
@@ -68,4 +78,54 @@
   padding: 18rpx;
   border-radius: 20rpx;
   background: #F7F8F3;
+}
+
+.location-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-top: 16rpx;
+  padding: 20rpx;
+  border: 2rpx dashed rgba(47, 125, 104, 0.28);
+  border-radius: 20rpx;
+  background: #F5FBF7;
+}
+
+.location-title {
+  font-size: 28rpx;
+  font-weight: 650;
+}
+
+.location-action {
+  flex: 0 0 auto;
+  padding: 10rpx 18rpx;
+  border-radius: 999rpx;
+  color: #FFFFFF;
+  background: #2F7D68;
+  font-size: 24rpx;
+  font-weight: 650;
+}
+
+.nearby-map {
+  width: 100%;
+  height: 460rpx;
+  margin-top: 22rpx;
+  border-radius: 22rpx;
+  overflow: hidden;
+}
+
+.map-empty {
+  margin-top: 16rpx;
+}
+
+.nearby-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-top: 16rpx;
+  padding: 18rpx;
+  border-radius: 20rpx;
+  background: #FFFFFF;
 }
