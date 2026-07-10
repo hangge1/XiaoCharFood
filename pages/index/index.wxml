@@ -36,10 +36,16 @@
   </view>
 
   <view class="card note-card">
-    <view class="section-title compact">记一餐</view>
-    <view class="subtitle">不用精确，像发一条只给自己看的饭桌动态。</view>
+    <view class="row">
+      <view>
+        <view class="section-title compact">{{editingMealId ? '修改这一餐' : '记一餐'}}</view>
+        <view class="subtitle">{{editingMealId ? '改完后会保留原来的记录时间。' : '不用精确，像发一条只给自己看的饭桌动态。'}}</view>
+      </view>
+      <view wx:if="{{editingMealId}}" class="edit-badge">编辑中</view>
+    </view>
     <input class="input" value="{{form.title}}" placeholder="吃了什么？例如：烧烤、番茄牛肉汤" bindinput="onTitleInput" />
-    <textarea class="textarea" value="{{form.note}}" placeholder="一句话感受，可选" bindinput="onNoteInput" />
+    <input class="input feeling-input" value="{{form.note}}" placeholder="一句话感受，可选" bindinput="onNoteInput" />
+    <view class="tag-label">常用描述</view>
     <view class="chip-list form-gap">
       <view
         wx:for="{{tags}}"
@@ -50,7 +56,10 @@
       >{{item}}</view>
       <view class="chip warn {{form.indulgent ? 'active' : ''}}" bindtap="toggleIndulgent">放纵餐</view>
     </view>
-    <view class="primary-button" bindtap="saveMeal">保存记录</view>
+    <view class="form-actions {{editingMealId ? 'with-side' : ''}}">
+      <view class="primary-button action-main" bindtap="saveMeal">{{editingMealId ? '保存修改' : '保存记录'}}</view>
+      <view wx:if="{{editingMealId}}" class="secondary-button action-side" bindtap="cancelEdit">取消</view>
+    </view>
   </view>
 
   <view class="card review-card">
@@ -87,7 +96,10 @@
         <view class="meal-title">{{item.title}}</view>
         <view class="meta">{{item.mealType}} · {{item.date}} {{item.time || ''}}</view>
       </view>
-      <view class="delete" bindtap="deleteMeal" data-id="{{item.id}}">删除</view>
+      <view class="meal-actions">
+        <view class="icon-action edit" bindtap="editMeal" data-id="{{item.id}}">✎</view>
+        <view class="icon-action danger" bindtap="deleteMeal" data-id="{{item.id}}">×</view>
+      </view>
     </view>
     <view wx:if="{{item.note}}" class="subtitle note">{{item.note}}</view>
     <view class="chip-list">

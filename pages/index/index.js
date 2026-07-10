@@ -20,6 +20,8 @@ Page({
       nickname: ''
     },
     nicknameDraft: '',
+    editingMealId: '',
+    editingMealMeta: null,
     form: {
       mealType: '晚餐',
       title: '',
@@ -97,6 +99,20 @@ Page({
     })
   },
 
+  resetMealForm() {
+    this.setData({
+      editingMealId: '',
+      editingMealMeta: null,
+      form: {
+        mealType: '晚餐',
+        title: '',
+        note: '',
+        tags: [],
+        indulgent: false
+      }
+    })
+  },
+
   saveMeal() {
     const form = this.data.form
     if (!form.mealType && !form.title && !form.note && form.tags.length === 0) {
@@ -110,6 +126,10 @@ Page({
       : form.tags
 
     store.saveMeal({
+      id: this.data.editingMealId || undefined,
+      date: this.data.editingMealMeta && this.data.editingMealMeta.date,
+      time: this.data.editingMealMeta && this.data.editingMealMeta.time,
+      createdAt: this.data.editingMealMeta && this.data.editingMealMeta.createdAt,
       mealType: form.mealType,
       title,
       note: form.note,
@@ -117,17 +137,39 @@ Page({
       indulgent: form.indulgent
     })
 
+    const message = this.data.editingMealId ? '已更新' : '已记录'
+    this.resetMealForm()
+    this.refresh()
+    wx.showToast({ title: message, icon: 'success' })
+  },
+
+  editMeal(e) {
+    const id = e.currentTarget.dataset.id
+    const meal = this.data.todayMeals.find(item => item.id === id)
+    if (!meal) return
+    const tags = (meal.tags || []).filter(tag => tag !== '放纵餐')
     this.setData({
+      editingMealId: meal.id,
+      editingMealMeta: {
+        date: meal.date,
+        time: meal.time,
+        createdAt: meal.createdAt
+      },
       form: {
-        mealType: '晚餐',
-        title: '',
-        note: '',
-        tags: [],
-        indulgent: false
+        mealType: meal.mealType || '晚餐',
+        title: meal.title || '',
+        note: meal.note || '',
+        tags,
+        indulgent: Boolean(meal.indulgent || (meal.tags || []).includes('放纵餐'))
       }
     })
-    this.refresh()
-    wx.showToast({ title: '已记录', icon: 'success' })
+    if (wx.pageScrollTo) {
+      wx.pageScrollTo({ scrollTop: 360, duration: 220 })
+    }
+  },
+
+  cancelEdit() {
+    this.resetMealForm()
   },
 
   deleteMeal(e) {
@@ -140,6 +182,9 @@ Page({
       success: res => {
         if (res.confirm) {
           store.deleteMeal(id)
+          if (this.data.editingMealId === id) {
+            this.resetMealForm()
+          }
           this.refresh()
         }
       }
