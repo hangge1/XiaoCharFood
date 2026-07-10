@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/cook/cook",
+    "pages/restaurants/restaurants",
+    "pages/mine/mine"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "小馋饭记",
+    "navigationBarBackgroundColor": "#F7F8F3",
+    "backgroundColor": "#F7F8F3"
+  },
+  "tabBar": {
+    "color": "#87907F",
+    "selectedColor": "#2F7D68",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "饭桌",
+        "iconPath": "assets/tabbar/tab-table.png",
+        "selectedIconPath": "assets/tabbar/tab-table-on.png"
+      },
+      {
+        "pagePath": "pages/cook/cook",
+        "text": "今晚",
+        "iconPath": "assets/tabbar/tab-cook.png",
+        "selectedIconPath": "assets/tabbar/tab-cook-on.png"
+      },
+      {
+        "pagePath": "pages/restaurants/restaurants",
+        "text": "回味",
+        "iconPath": "assets/tabbar/tab-memory.png",
+        "selectedIconPath": "assets/tabbar/tab-memory-on.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "小家",
+        "iconPath": "assets/tabbar/tab-home.png",
+        "selectedIconPath": "assets/tabbar/tab-home-on.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

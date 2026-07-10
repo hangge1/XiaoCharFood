@@ -1,0 +1,67 @@
+.compact {
+  margin: 0 0 18rpx;
+}
+
+.mine-hero {
+  margin-bottom: 28rpx;
+  padding-top: 12rpx;
+}
+
+.mine-hero .title {
+  margin-top: 18rpx;
+}
+
+.data-card {
+  background: #F5FBF7;
+  border-color: #C9E0D6;
+}
+
+.nickname-card {
+  background: #FFFCF4;
+  border-color: #F2D7A7;
+}
+
+.pref-card {
+  border-color: #A8D2C3;
+}
+
+.gap {
+  margin-top: 20rpx;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+}
+
+.stats > view {
+  padding: 18rpx 10rpx;
+  border-radius: 22rpx;
+  background: #FFFFFF;
+  text-align: center;
+}
+
+.stat-num {
+  color: #2F7D68;
+  font-size: 38rpx;
+  font-weight: 700;
+}
+
+.field-label {
+  margin: 20rpx 0 10rpx;
+  color: #5D675B;
+  font-size: 26rpx;
+}
+
+.danger-button {
+  min-height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid #C84F4F;
+  border-radius: 16rpx;
+  color: #C84F4F;
+  background: #FFFFFF;
+  font-weight: 650;
+}

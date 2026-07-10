@@ -1,0 +1,97 @@
+<view class="page">
+  <view class="hero">
+    <view>
+      <view class="sticker">🍚 饭桌营业中</view>
+      <view class="meta">今天 {{today}}</view>
+      <view class="title">{{profile.nickname ? profile.nickname + '，今天吃得怎么样' : '今天吃得怎么样'}}</view>
+      <view class="subtitle">给今天留个味道，明天就少纠结一点。</view>
+    </view>
+    <view class="hero-face">^_^</view>
+  </view>
+
+  <view wx:if="{{!profile.nickname}}" class="card nickname-card soft-panel">
+    <view class="section-title compact">先认识一下</view>
+    <view class="subtitle">以后主页会这样称呼你，记录吃饭也更像自己的小本子。</view>
+    <input class="input form-gap" value="{{nicknameDraft}}" placeholder="例如：小周、阿辰、饭搭子" bindinput="onNicknameInput" />
+    <view class="primary-button form-gap" bindtap="saveNickname">保存称呼</view>
+  </view>
+
+  <view class="card today-card">
+    <view class="row">
+      <view class="section-title compact">今日饮食</view>
+      <view class="sticker green">{{todayMeals.length}} 餐已贴上</view>
+    </view>
+    <view class="meal-grid">
+      <view
+        wx:for="{{mealTypes}}"
+        wx:key="*this"
+        class="meal-cell {{form.mealType === item ? 'active' : ''}}"
+        bindtap="selectMealType"
+        data-type="{{item}}"
+      >
+        <view>{{item}}</view>
+        <view class="meta">点选预填</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card note-card">
+    <view class="section-title compact">记一餐</view>
+    <view class="subtitle">不用精确，像发一条只给自己看的饭桌动态。</view>
+    <input class="input" value="{{form.title}}" placeholder="吃了什么？例如：烧烤、番茄牛肉汤" bindinput="onTitleInput" />
+    <textarea class="textarea" value="{{form.note}}" placeholder="一句话感受，可选" bindinput="onNoteInput" />
+    <view class="chip-list form-gap">
+      <view
+        wx:for="{{tags}}"
+        wx:key="*this"
+        class="chip {{form.tags.indexOf(item) >= 0 ? 'active' : ''}}"
+        bindtap="toggleTag"
+        data-tag="{{item}}"
+      >{{item}}</view>
+      <view class="chip warn {{form.indulgent ? 'active' : ''}}" bindtap="toggleIndulgent">放纵餐</view>
+    </view>
+    <view class="primary-button" bindtap="saveMeal">保存记录</view>
+  </view>
+
+  <view class="card review-card">
+    <view class="row">
+      <view>
+        <view class="section-title compact">本周回顾</view>
+        <view class="meta">不打分，只帮你回想</view>
+      </view>
+      <view class="meta">{{review.mealCount || 0}} 条记录</view>
+    </view>
+    <view class="stats">
+      <view>
+        <view class="stat-num">{{review.outsideCount || 0}}</view>
+        <view class="meta">外食</view>
+      </view>
+      <view>
+        <view class="stat-num">{{review.indulgentCount || 0}}</view>
+        <view class="meta">放纵餐</view>
+      </view>
+      <view>
+        <view class="stat-num">{{review.oilyCount || 0}}</view>
+        <view class="meta">偏油</view>
+      </view>
+    </view>
+    <view wx:for="{{review.tips}}" wx:key="*this" class="tip">{{item}}</view>
+    <view class="secondary-button form-gap" bindtap="goCook">看看今晚吃什么</view>
+  </view>
+
+  <view class="section-title">今天的记录</view>
+  <view wx:if="{{todayMeals.length === 0}}" class="empty card">还没有记录。先随手记一餐，之后回顾会更准。</view>
+  <view wx:for="{{todayMeals}}" wx:key="id" class="card meal-card">
+    <view class="row">
+      <view>
+        <view class="meal-title">{{item.title}}</view>
+        <view class="meta">{{item.mealType}} · {{item.date}} {{item.time || ''}}</view>
+      </view>
+      <view class="delete" bindtap="deleteMeal" data-id="{{item.id}}">删除</view>
+    </view>
+    <view wx:if="{{item.note}}" class="subtitle note">{{item.note}}</view>
+    <view class="chip-list">
+      <view wx:for="{{item.tags}}" wx:key="*this" class="chip">{{item}}</view>
+    </view>
+  </view>
+</view>

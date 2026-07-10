@@ -1,0 +1,155 @@
+page {
+  background: #F7F8F3;
+  color: #20251F;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 30rpx;
+  line-height: 1.45;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 32rpx 32rpx 160rpx;
+  box-sizing: border-box;
+  background:
+    linear-gradient(180deg, #FFF7EC 0%, #F7F8F3 360rpx, #F7F8F3 100%);
+}
+
+.section-title {
+  margin: 32rpx 0 16rpx;
+  font-size: 34rpx;
+  font-weight: 650;
+}
+
+.card {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+  border: 1rpx solid #DDE4D7;
+  border-radius: 22rpx;
+  background: #FFFFFF;
+  box-sizing: border-box;
+  box-shadow: 0 12rpx 28rpx rgba(47, 72, 56, 0.06);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.title {
+  font-size: 44rpx;
+  line-height: 58rpx;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #5D675B;
+  font-size: 26rpx;
+}
+
+.meta {
+  color: #87907F;
+  font-size: 24rpx;
+}
+
+.primary-button,
+.secondary-button {
+  min-height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  font-weight: 650;
+}
+
+.primary-button {
+  color: #FFFFFF;
+  background: #2F7D68;
+}
+
+.secondary-button {
+  color: #2F7D68;
+  background: #DDEFE8;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+}
+
+.chip {
+  padding: 10rpx 18rpx;
+  border-radius: 999rpx;
+  color: #5D675B;
+  background: #EEF3EA;
+  font-size: 24rpx;
+}
+
+.chip.active {
+  color: #2F7D68;
+  background: #DDEFE8;
+  font-weight: 650;
+}
+
+.chip.warn {
+  color: #A75031;
+  background: #F8E5DC;
+  font-weight: 650;
+}
+
+.empty {
+  padding: 32rpx 24rpx;
+  color: #5D675B;
+  text-align: center;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  min-height: 84rpx;
+  padding: 20rpx;
+  border: 1rpx solid #DDE4D7;
+  border-radius: 20rpx;
+  background: #FFFFFF;
+  box-sizing: border-box;
+  font-size: 30rpx;
+}
+
+.textarea {
+  min-height: 144rpx;
+}
+
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx 18rpx;
+  border: 2rpx solid rgba(32, 37, 31, 0.08);
+  border-radius: 18rpx;
+  background: #FFF3D9;
+  color: #5A4934;
+  font-size: 24rpx;
+  font-weight: 700;
+  transform: rotate(-2deg);
+  box-shadow: 0 8rpx 0 rgba(216, 111, 69, 0.18);
+}
+
+.sticker.green {
+  background: #DDEFE8;
+  color: #2F7D68;
+  box-shadow: 0 8rpx 0 rgba(47, 125, 104, 0.16);
+  transform: rotate(2deg);
+}
+
+.sticker.orange {
+  background: #F8E5DC;
+  color: #A75031;
+}
+
+.soft-panel {
+  border: 2rpx dashed rgba(47, 125, 104, 0.24);
+  background: rgba(255, 255, 255, 0.76);
+}

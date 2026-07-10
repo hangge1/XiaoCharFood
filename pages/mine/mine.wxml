@@ -1,0 +1,49 @@
+<view class="page">
+  <view class="mine-hero">
+    <view>
+      <view class="sticker">🏠 小家冰箱贴</view>
+      <view class="title">饭搭子的偏好</view>
+      <view class="subtitle">当前版本的数据保存在本机，不会公开展示。</view>
+    </view>
+  </view>
+
+  <view class="card data-card">
+    <view class="section-title compact">本地数据</view>
+    <view class="stats">
+      <view>
+        <view class="stat-num">{{stats.meals}}</view>
+        <view class="meta">饮食记录</view>
+      </view>
+      <view>
+        <view class="stat-num">{{stats.plans}}</view>
+        <view class="meta">做饭计划</view>
+      </view>
+      <view>
+        <view class="stat-num">{{stats.restaurants}}</view>
+        <view class="meta">餐厅</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card nickname-card">
+    <view class="section-title compact">怎么称呼你</view>
+    <input class="input" value="{{nicknameDraft}}" placeholder="例如：小周、阿辰、饭搭子" bindinput="onNicknameInput" />
+    <view class="secondary-button gap" bindtap="saveProfile">保存称呼</view>
+  </view>
+
+  <view class="card pref-card">
+    <view class="section-title compact">做饭偏好</view>
+    <view class="field-label">口味标签</view>
+    <input class="input" value="{{tasteInput}}" placeholder="例如：家常、清淡、快手" bindinput="onTasteInput" />
+    <view class="field-label">常见做饭时长（分钟）</view>
+    <input class="input" type="number" value="{{maxCookMinutes}}" bindinput="onMinutesInput" />
+    <view class="primary-button gap" bindtap="savePreferences">保存偏好</view>
+  </view>
+
+  <view class="card soft-panel">
+    <view class="section-title compact">隐私边界</view>
+    <view class="subtitle">第一个版本不做公开社区、不做餐厅榜单、不做家庭共享。记录只用于本机回顾和推荐。</view>
+  </view>
+
+  <view class="danger-button" bindtap="clearAll">清空本地数据</view>
+</view>

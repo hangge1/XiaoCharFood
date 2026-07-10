@@ -1,0 +1,65 @@
+<view class="page">
+  <view class="cook-hero">
+    <view>
+      <view class="sticker orange">🥘 一天吃什么</view>
+      <view class="title">先把一天菜单想好</view>
+      <view class="subtitle">输入口味、食材或需求关键词，一次推荐早餐、午餐、晚餐和加餐。</view>
+    </view>
+    <view class="cook-bubble">买菜<br />更省心</view>
+  </view>
+
+  <view class="card soft-panel">
+    <view class="section-title compact">今天的需求</view>
+    <view class="subtitle">可以混着写：口味、已有食材、减肥、增肌、高蛋白、少油。</view>
+    <textarea class="textarea keyword-box" value="{{keywordText}}" placeholder="例如：清淡 鸡蛋 番茄 减肥 高蛋白" bindinput="onKeywordInput" />
+
+    <view class="section-label">快捷关键词</view>
+    <view class="chip-list">
+      <view
+        wx:for="{{quickKeywords}}"
+        wx:key="*this"
+        class="chip {{keywordText.indexOf(item) >= 0 ? 'active' : ''}}"
+        data-keyword="{{item}}"
+        bindtap="addKeyword"
+      >{{item}}</view>
+    </view>
+    <view class="primary-button gap" bindtap="generateDayMenu">生成一日菜单</view>
+  </view>
+
+  <view wx:if="{{dayMenu}}" class="menu-note">{{dayMenu.note}}</view>
+
+  <view class="section-title">今日菜单贴</view>
+  <view wx:for="{{dayMenu.meals}}" wx:key="slot" wx:for-index="idx" class="card recipe-card">
+    <view class="row">
+      <view class="sticker green">{{item.slot}}</view>
+      <view class="meta">{{item.minutes}} 分钟</view>
+    </view>
+    <view class="recipe-title">{{item.name}}</view>
+    <view class="subtitle">{{item.reason}}</view>
+    <view class="chip-list">
+      <view wx:for="{{item.ingredients}}" wx:key="*this" class="chip">{{item}}</view>
+    </view>
+    <view class="secondary-button gap" data-index="{{idx}}" bindtap="recordMeal">吃完后记为{{item.slot}}</view>
+  </view>
+
+  <view class="card shopping-card">
+    <view class="row">
+      <view class="section-title compact">买菜清单</view>
+      <view class="meta">{{dayMenu.shoppingList.length}} 样</view>
+    </view>
+    <view class="shopping-grid">
+      <view wx:for="{{dayMenu.shoppingList}}" wx:key="name" class="shopping-item">
+        {{item.name}}<text wx:if="{{item.count > 1}}"> x{{item.count}}</text>
+      </view>
+    </view>
+    <view class="primary-button gap" bindtap="saveDayMenu">保存这套菜单</view>
+  </view>
+
+  <view class="section-title">已保存菜单</view>
+  <view wx:if="{{plans.length === 0}}" class="empty card">还没有保存菜单。先生成一套，一天买菜更有底。</view>
+  <view wx:for="{{plans}}" wx:key="id" class="card">
+    <view class="recipe-title small">{{item.recipeName}}</view>
+    <view class="meta">{{item.minutes}} 分钟 · {{item.status}}</view>
+    <view class="subtitle">{{item.reason}}</view>
+  </view>
+</view>

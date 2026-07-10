@@ -1,0 +1,71 @@
+.compact {
+  margin: 0 0 18rpx;
+}
+
+.restaurant-hero {
+  margin-bottom: 28rpx;
+  padding-top: 12rpx;
+}
+
+.restaurant-hero .title {
+  margin-top: 18rpx;
+}
+
+.mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12rpx;
+}
+
+.mode-item {
+  min-height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16rpx;
+  color: #5D675B;
+  background: #EEF3EA;
+  font-weight: 650;
+  box-shadow: inset 0 -4rpx 0 rgba(32, 37, 31, 0.04);
+}
+
+.mode-item.active {
+  color: #FFFFFF;
+  background: #2F7D68;
+}
+
+.create-card {
+  border-color: #A8D2C3;
+  background: #FFFCF4;
+}
+
+.search-card {
+  border-color: #C9E0D6;
+  background: #F5FBF7;
+}
+
+.gap {
+  margin-top: 20rpx;
+}
+
+.gap-small {
+  margin-top: 14rpx;
+}
+
+.restaurant-title {
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.visit-count {
+  flex: 0 0 auto;
+  color: #2F7D68;
+  font-weight: 700;
+}
+
+.visit-box {
+  margin: 18rpx 0;
+  padding: 18rpx;
+  border-radius: 20rpx;
+  background: #F7F8F3;
+}

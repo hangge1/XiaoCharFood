@@ -1,0 +1,105 @@
+.compact {
+  margin: 0 0 18rpx;
+}
+
+.cook-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22rpx;
+  margin-bottom: 28rpx;
+  padding-top: 12rpx;
+}
+
+.cook-hero .title {
+  margin-top: 18rpx;
+}
+
+.cook-bubble {
+  flex: 0 0 auto;
+  width: 118rpx;
+  height: 118rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 36rpx;
+  background: #F8E5DC;
+  color: #A75031;
+  font-size: 24rpx;
+  font-weight: 800;
+  text-align: center;
+  transform: rotate(7deg);
+  box-shadow: 8rpx 10rpx 0 rgba(216, 111, 69, 0.16);
+}
+
+.gap {
+  margin-top: 20rpx;
+}
+
+.section-label {
+  margin: 28rpx 0 14rpx;
+  color: #5D675B;
+  font-size: 26rpx;
+  font-weight: 650;
+}
+
+.keyword-box {
+  margin-top: 18rpx;
+  min-height: 120rpx;
+  background: #FFFFFF;
+}
+
+.recipe-card {
+  border-color: #A8D2C3;
+  background: #FFFFFF;
+}
+
+.recipe-title {
+  margin: 8rpx 0 12rpx;
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.recipe-title.small {
+  font-size: 32rpx;
+}
+
+.pill {
+  flex: 0 0 auto;
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  background: #F8E5DC;
+  color: #A75031;
+  font-size: 24rpx;
+  font-weight: 650;
+}
+
+.menu-note {
+  margin: 8rpx 0 24rpx;
+  padding: 18rpx 22rpx;
+  border-radius: 20rpx;
+  color: #2F7D68;
+  background: #DDEFE8;
+  font-size: 26rpx;
+  font-weight: 650;
+}
+
+.shopping-card {
+  background: #FFFCF4;
+  border-color: #F2D7A7;
+}
+
+.shopping-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12rpx;
+  margin-top: 18rpx;
+}
+
+.shopping-item {
+  padding: 14rpx 16rpx;
+  border-radius: 16rpx;
+  background: #FFFFFF;
+  color: #5D675B;
+  font-size: 26rpx;
+}

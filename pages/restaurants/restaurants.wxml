@@ -1,0 +1,65 @@
+<view class="page">
+  <view class="restaurant-hero">
+    <view>
+      <view class="sticker green">📍 回味雷达</view>
+      <view class="title">想起那家好吃的店</view>
+      <view class="subtitle">保存自己的体验，之后找店不用翻聊天记录。</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="mode-switch">
+      <view class="mode-item {{mode === 'search' ? 'active' : ''}}" data-mode="search" bindtap="setMode">找去过的店</view>
+      <view class="mode-item {{mode === 'create' ? 'active' : ''}}" data-mode="create" bindtap="setMode">记录新餐厅</view>
+    </view>
+  </view>
+
+  <view wx:if="{{mode === 'search'}}" class="card search-card">
+    <view class="section-title compact">找回餐厅</view>
+    <view class="subtitle">按店名、菜品或你的备注搜索。</view>
+    <input class="input gap" placeholder="例如：火锅、吊龙、约会" value="{{keyword}}" bindinput="onKeywordInput" />
+    <view class="chip-list gap">
+      <view class="chip {{onlyRevisit ? 'active' : ''}}" bindtap="toggleOnlyRevisit">只看还想再去</view>
+    </view>
+  </view>
+
+  <view wx:if="{{mode === 'create'}}" class="card create-card">
+    <view class="section-title compact">记录新餐厅</view>
+    <view class="subtitle">像贴一张小票：先写店名就能保存，其他信息可以随手补。</view>
+    <input class="input" placeholder="店名" value="{{form.name}}" data-key="name" bindinput="onInput" />
+    <input class="input gap-small" placeholder="人均，例如 128" value="{{form.averageCost}}" data-key="averageCost" bindinput="onInput" />
+    <input class="input gap-small" placeholder="这次点了什么？" value="{{form.dishes}}" data-key="dishes" bindinput="onInput" />
+    <textarea class="textarea gap-small" placeholder="一句话评价，可选" value="{{form.note}}" data-key="note" bindinput="onInput" />
+    <view class="chip-list gap">
+      <view
+        wx:for="{{sceneTags}}"
+        wx:key="*this"
+        class="chip {{form.sceneTags.indexOf(item) >= 0 ? 'active' : ''}}"
+        data-tag="{{item}}"
+        bindtap="toggleSceneTag"
+      >{{item}}</view>
+    </view>
+    <view class="primary-button gap" bindtap="saveRestaurant">保存这家店</view>
+  </view>
+
+  <view class="section-title">回味清单</view>
+  <view wx:if="{{restaurants.length === 0}}" class="empty card">还没有餐厅记忆。下次吃到不错的店，可以先简单记下来。</view>
+  <view wx:for="{{restaurants}}" wx:key="id" class="card">
+    <view class="row">
+      <view>
+        <view class="restaurant-title">{{item.name}}</view>
+        <view class="meta">人均 {{item.averageCost || '未记录'}} · {{item.revisitIntent}}</view>
+      </view>
+      <view class="visit-count">{{item.visitCount}} 次</view>
+    </view>
+    <view wx:if="{{item.note}}" class="subtitle gap-small">{{item.note}}</view>
+    <view wx:if="{{item.latestVisit}}" class="visit-box">
+      <view class="meta">最近 {{item.latestVisit.date}}</view>
+      <view>{{item.latestVisit.dishes || '菜品未记录'}}</view>
+      <view class="subtitle">{{item.latestVisit.note}}</view>
+    </view>
+    <view class="chip-list">
+      <view wx:for="{{item.sceneTags}}" wx:key="*this" class="chip">{{item}}</view>
+    </view>
+  </view>
+</view>
