@@ -17,8 +17,42 @@
 
   <view wx:if="{{mode === 'search'}}" class="card search-card">
     <view class="section-title compact">找回餐厅</view>
-    <view class="subtitle">按店名、菜品或你的备注搜索。</view>
-    <input class="input gap" placeholder="例如：火锅、吊龙、约会" value="{{keyword}}" bindinput="onKeywordInput" />
+    <view class="subtitle">输入后点搜索，也可以直接点下拉结果。</view>
+    <view class="search-box">
+      <input
+        class="search-input"
+        placeholder="店名 / 菜品 / 备注，例如：火锅、吊龙"
+        value="{{keyword}}"
+        confirm-type="search"
+        bindfocus="onSearchFocus"
+        bindconfirm="runSearch"
+        bindinput="onKeywordInput"
+      />
+      <view class="search-button" bindtap="runSearch">搜索</view>
+    </view>
+    <view wx:if="{{keyword}}" class="clear-search" bindtap="clearSearch">清空搜索</view>
+
+    <view wx:if="{{searchDropdownOpen}}" class="search-dropdown">
+      <view wx:if="{{searchResults.length > 0}}">
+        <view wx:for="{{searchResults}}" wx:key="id" class="search-result" data-id="{{item.id}}" bindtap="selectSearchResult">
+          <view>
+            <view class="restaurant-title small">{{item.name}}</view>
+            <view class="meta">{{item.searchDescription}}</view>
+          </view>
+          <view class="location-action">查看</view>
+        </view>
+      </view>
+      <view wx:else class="search-empty">
+        <view>没有找到“{{keyword}}”。</view>
+        <view class="secondary-button gap-small" bindtap="createFromSearch">记录这家店</view>
+      </view>
+    </view>
+
+    <view wx:if="{{searchHasRun && restaurants.length === 0}}" class="search-empty-block">
+      <view class="sticker orange">没搜到</view>
+      <view class="subtitle gap-small">可能还没记录这家店。可以直接把“{{keyword}}”作为新餐厅保存。</view>
+      <view class="primary-button gap" bindtap="createFromSearch">去记录这家店</view>
+    </view>
     <view class="chip-list gap">
       <view class="chip {{onlyRevisit ? 'active' : ''}}" bindtap="toggleOnlyRevisit">只看还想再去</view>
     </view>

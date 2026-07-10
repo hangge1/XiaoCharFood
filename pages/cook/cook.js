@@ -1,7 +1,7 @@
 const store = require('../../utils/store.js')
 const recommender = require('../../utils/recommender.js')
 
-const QUICK_KEYWORDS = ['清淡', '省事', '减肥', '增肌', '高蛋白', '少油', '微辣', '鸡蛋', '番茄', '土豆']
+const QUICK_KEYWORDS = ['清淡', '省事', '家常', '川菜', '减肥', '增肌', '高蛋白', '少油', '微辣', '牛肉', '鸡蛋', '豆腐']
 
 Page({
   data: {

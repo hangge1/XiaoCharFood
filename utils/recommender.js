@@ -88,6 +88,238 @@ const RECIPES = [
     tags: ['清淡', '快手', '少油'],
     ingredients: ['紫菜', '虾皮', '鸡蛋'],
     reason: '很快能补一道清淡汤，不会增加太多准备负担。'
+  },
+  {
+    name: '西红柿炒鸡蛋',
+    minutes: 15,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['家常', '酸甜', '快手', '下饭'],
+    ingredients: ['西红柿', '鸡蛋', '葱'],
+    reason: '经典家常菜，食材简单，适合不知道做什么的时候兜底。'
+  },
+  {
+    name: '麻婆豆腐',
+    minutes: 20,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['微辣', '下饭', '家常'],
+    ingredients: ['豆腐', '肉末', '豆瓣酱', '花椒'],
+    reason: '重口下饭，适合想吃点有味道但不想复杂备菜的时候。'
+  },
+  {
+    name: '宫保鸡丁',
+    minutes: 28,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['酸甜', '微辣', '下饭', '家常'],
+    ingredients: ['鸡胸肉', '花生', '黄瓜', '胡萝卜'],
+    reason: '口味丰富，适合想吃酸甜微辣的一餐。'
+  },
+  {
+    name: '鱼香肉丝',
+    minutes: 30,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['酸甜', '微辣', '下饭'],
+    ingredients: ['猪肉', '木耳', '胡萝卜', '青椒'],
+    reason: '下饭且食材常见，适合家里有青椒胡萝卜时安排。'
+  },
+  {
+    name: '可乐鸡翅',
+    minutes: 35,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['甜口', '家常', '饱腹'],
+    ingredients: ['鸡翅', '可乐', '姜'],
+    reason: '适合想吃带点仪式感但做法稳定的一餐。'
+  },
+  {
+    name: '红烧肉',
+    minutes: 60,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['浓郁', '家常', '饱腹'],
+    ingredients: ['五花肉', '冰糖', '姜', '葱'],
+    reason: '适合周末或时间充裕时做一顿更有满足感的饭。'
+  },
+  {
+    name: '清蒸鲈鱼',
+    minutes: 25,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['清淡', '少油', '高蛋白', '减肥'],
+    ingredients: ['鲈鱼', '葱', '姜', '蒸鱼豉油'],
+    reason: '少油高蛋白，适合想吃清爽但正式一点的晚饭。'
+  },
+  {
+    name: '白灼虾',
+    minutes: 15,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['清淡', '快手', '高蛋白', '增肌', '减肥'],
+    ingredients: ['虾', '姜', '葱'],
+    reason: '准备简单，蛋白质足，适合减脂或增肌需求。'
+  },
+  {
+    name: '蒜蓉西兰花',
+    minutes: 12,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['清淡', '蔬菜', '快手', '减肥', '少油'],
+    ingredients: ['西兰花', '蒜'],
+    reason: '快手补蔬菜，可以搭配肉菜或主食。'
+  },
+  {
+    name: '蚝油生菜',
+    minutes: 10,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['清淡', '蔬菜', '快手', '少油'],
+    ingredients: ['生菜', '蚝油', '蒜'],
+    reason: '十分钟能补一道绿叶菜，适合工作日。'
+  },
+  {
+    name: '冬瓜丸子汤',
+    minutes: 30,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['清淡', '汤菜', '家常', '少油'],
+    ingredients: ['冬瓜', '肉末', '葱', '姜'],
+    reason: '清淡有汤，适合想缓一缓油腻感的时候。'
+  },
+  {
+    name: '萝卜牛腩汤',
+    minutes: 55,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['汤菜', '饱腹', '家常', '增肌'],
+    ingredients: ['牛腩', '白萝卜', '姜', '葱'],
+    reason: '适合天气凉或想吃热乎一点的时候。'
+  },
+  {
+    name: '葱油拌面',
+    minutes: 15,
+    mealTypes: ['早餐', '午餐', '晚餐'],
+    tags: ['省事', '快手', '主食'],
+    ingredients: ['面条', '小葱', '生抽'],
+    reason: '食材少、速度快，适合不想大动干戈的一餐。'
+  },
+  {
+    name: '阳春面',
+    minutes: 12,
+    mealTypes: ['早餐', '加餐', '晚餐'],
+    tags: ['清淡', '省事', '主食'],
+    ingredients: ['面条', '小葱', '鸡蛋'],
+    reason: '清淡省事，适合早餐或晚上简单吃一点。'
+  },
+  {
+    name: '皮蛋瘦肉粥',
+    minutes: 35,
+    mealTypes: ['早餐', '晚餐'],
+    tags: ['清淡', '家常', '暖胃'],
+    ingredients: ['大米', '皮蛋', '瘦肉', '姜'],
+    reason: '适合想吃热乎、清淡、好消化的时候。'
+  },
+  {
+    name: '小米南瓜粥',
+    minutes: 30,
+    mealTypes: ['早餐', '加餐'],
+    tags: ['清淡', '暖胃', '减肥'],
+    ingredients: ['小米', '南瓜'],
+    reason: '适合早餐提前煮好，也适合想吃轻一点的时候。'
+  },
+  {
+    name: '鸡蛋灌饼',
+    minutes: 18,
+    mealTypes: ['早餐', '加餐'],
+    tags: ['饱腹', '省事', '主食'],
+    ingredients: ['面饼', '鸡蛋', '生菜', '火腿'],
+    reason: '早餐饱腹感强，也方便根据家里食材替换。'
+  },
+  {
+    name: '青椒土豆片',
+    minutes: 18,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['家常', '素菜', '省事'],
+    ingredients: ['土豆', '青椒', '蒜'],
+    reason: '家里有土豆和青椒时，很适合做一道快手素菜。'
+  },
+  {
+    name: '地三鲜',
+    minutes: 30,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['家常', '下饭', '素菜'],
+    ingredients: ['茄子', '土豆', '青椒'],
+    reason: '经典下饭素菜，适合想吃有满足感的家常味。'
+  },
+  {
+    name: '肉末茄子',
+    minutes: 25,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['家常', '下饭', '浓郁'],
+    ingredients: ['茄子', '肉末', '蒜'],
+    reason: '很下饭，适合家里有茄子又想吃热菜的时候。'
+  },
+  {
+    name: '手撕包菜',
+    minutes: 12,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['快手', '蔬菜', '微辣', '下饭'],
+    ingredients: ['包菜', '干辣椒', '蒜'],
+    reason: '快手蔬菜菜，适合补一盘有锅气的家常味。'
+  },
+  {
+    name: '孜然牛肉',
+    minutes: 25,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['增肌', '高蛋白', '重口', '下饭'],
+    ingredients: ['牛肉', '洋葱', '孜然'],
+    reason: '蛋白质足、味道明确，适合想吃香一点的晚饭。'
+  },
+  {
+    name: '黑椒牛柳',
+    minutes: 25,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['高蛋白', '增肌', '下饭'],
+    ingredients: ['牛肉', '洋葱', '彩椒', '黑胡椒'],
+    reason: '适合增肌或想吃肉的一餐，搭配米饭也方便。'
+  },
+  {
+    name: '照烧鸡腿饭',
+    minutes: 30,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['饱腹', '家常', '便当'],
+    ingredients: ['鸡腿', '米饭', '西兰花', '胡萝卜'],
+    reason: '一碗饭解决主食、肉和蔬菜，适合提前备餐。'
+  },
+  {
+    name: '鸡丝凉面',
+    minutes: 25,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['清爽', '省事', '高蛋白'],
+    ingredients: ['面条', '鸡胸肉', '黄瓜', '芝麻酱'],
+    reason: '适合天气热或想吃清爽主食的时候。'
+  },
+  {
+    name: '番茄鸡蛋面',
+    minutes: 15,
+    mealTypes: ['早餐', '午餐', '晚餐'],
+    tags: ['快手', '酸甜', '家常', '主食'],
+    ingredients: ['面条', '番茄', '鸡蛋', '葱'],
+    reason: '食材常见、速度快，适合不知道吃什么时兜底。'
+  },
+  {
+    name: '香煎豆腐',
+    minutes: 18,
+    mealTypes: ['午餐', '晚餐'],
+    tags: ['家常', '素菜', '高蛋白'],
+    ingredients: ['豆腐', '鸡蛋', '葱'],
+    reason: '豆腐也能有饱腹感，适合想少吃肉的一餐。'
+  },
+  {
+    name: '凉拌黄瓜木耳',
+    minutes: 12,
+    mealTypes: ['午餐', '晚餐', '加餐'],
+    tags: ['清爽', '减肥', '少油', '蔬菜'],
+    ingredients: ['黄瓜', '木耳', '蒜', '醋'],
+    reason: '清爽少油，适合搭配较重口的主菜。'
+  },
+  {
+    name: '银耳雪梨羹',
+    minutes: 40,
+    mealTypes: ['加餐', '早餐'],
+    tags: ['甜口', '清淡', '加餐'],
+    ingredients: ['银耳', '雪梨', '枸杞'],
+    reason: '适合当作温和加餐，提前煮好更省心。'
   }
 ]
 
@@ -119,6 +351,11 @@ function normalizeGoalKeywords(keywords) {
     if (item === '健身') expanded.push('增肌', '高蛋白')
     if (item === '低脂') expanded.push('少油', '减肥')
     if (item === '蛋白') expanded.push('高蛋白')
+    if (item === '川菜' || item === '辣' || item === '重口') expanded.push('微辣', '下饭', '重口')
+    if (item === '粤菜') expanded.push('清淡', '少油')
+    if (item === '家常菜') expanded.push('家常')
+    if (item === '清爽') expanded.push('清淡', '少油')
+    if (item === '备餐') expanded.push('便当', '省事')
   })
   return Array.from(new Set(expanded))
 }

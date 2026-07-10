@@ -6,7 +6,10 @@ Page({
   data: {
     sceneTags: SCENE_TAGS,
     restaurants: [],
+    searchResults: [],
     keyword: '',
+    searchHasRun: false,
+    searchDropdownOpen: false,
     onlyRevisit: false,
     mode: 'search',
     currentLocation: null,
@@ -42,11 +45,12 @@ Page({
           distanceText: `${restaurant.distanceKm.toFixed(1)}km`
         }))
       : []
+    const restaurants = store.getRestaurantSummaries({
+      keyword: this.data.keyword,
+      revisitIntent: this.data.onlyRevisit ? '还想再去' : ''
+    })
     this.setData({
-      restaurants: store.getRestaurantSummaries({
-        keyword: this.data.keyword,
-        revisitIntent: this.data.onlyRevisit ? '还想再去' : ''
-      }),
+      restaurants,
       nearbyRestaurants,
       mapMarkers: this.buildMarkers(nearbyRestaurants),
       mapCircles: this.buildCircles()
@@ -95,9 +99,87 @@ Page({
     }]
   },
 
+  formatSearchResults(restaurants) {
+    return restaurants.map(restaurant => {
+      const latestVisit = restaurant.latestVisit || {}
+      const searchDescription = latestVisit.dishes ||
+        latestVisit.note ||
+        restaurant.note ||
+        restaurant.address ||
+        '已记录餐厅'
+      return Object.assign({}, restaurant, { searchDescription })
+    })
+  },
+
   onKeywordInput(e) {
-    this.setData({ keyword: e.detail.value })
+    const keyword = e.detail.value
+    const searchResults = keyword.trim()
+      ? this.formatSearchResults(store.getRestaurantSummaries({
+        keyword,
+        revisitIntent: this.data.onlyRevisit ? '还想再去' : ''
+      }).slice(0, 5))
+      : []
+    this.setData({
+      keyword,
+      searchResults,
+      searchDropdownOpen: Boolean(keyword.trim()),
+      searchHasRun: false
+    })
     this.refresh()
+  },
+
+  onSearchFocus() {
+    if (this.data.keyword.trim()) {
+      this.setData({ searchDropdownOpen: true })
+    }
+  },
+
+  runSearch() {
+    const keyword = this.data.keyword.trim()
+    const restaurants = store.getRestaurantSummaries({
+      keyword,
+      revisitIntent: this.data.onlyRevisit ? '还想再去' : ''
+    })
+    this.setData({
+      keyword,
+      restaurants,
+      searchResults: this.formatSearchResults(restaurants.slice(0, 5)),
+      searchHasRun: true,
+      searchDropdownOpen: false
+    })
+    if (keyword && restaurants.length === 0) {
+      wx.showToast({ title: '没有匹配的餐厅', icon: 'none' })
+    }
+  },
+
+  clearSearch() {
+    this.setData({
+      keyword: '',
+      searchResults: [],
+      searchHasRun: false,
+      searchDropdownOpen: false
+    })
+    this.refresh()
+  },
+
+  selectSearchResult(e) {
+    const id = e.currentTarget.dataset.id
+    const restaurant = this.data.searchResults.find(item => item.id === id)
+    if (!restaurant) return
+    this.setData({
+      keyword: restaurant.name,
+      searchHasRun: true,
+      searchDropdownOpen: false
+    })
+    this.refresh()
+  },
+
+  createFromSearch() {
+    this.setData({
+      mode: 'create',
+      searchDropdownOpen: false,
+      'form.name': this.data.keyword.trim()
+    })
   },
 
   toggleOnlyRevisit() {
@@ -106,7 +188,10 @@ Page({
   },
 
   setMode(e) {
-    this.setData({ mode: e.currentTarget.dataset.mode })
+    this.setData({
+      mode: e.currentTarget.dataset.mode,
+      searchDropdownOpen: false
+    })
   },
 
   chooseRestaurantLocation() {
