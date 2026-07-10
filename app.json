@@ -19,25 +19,25 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "饭桌",
+        "text": "饭卡",
         "iconPath": "assets/tabbar/tab-table.png",
         "selectedIconPath": "assets/tabbar/tab-table-on.png"
       },
       {
         "pagePath": "pages/cook/cook",
-        "text": "今晚",
+        "text": "菜灵感",
         "iconPath": "assets/tabbar/tab-cook.png",
         "selectedIconPath": "assets/tabbar/tab-cook-on.png"
       },
       {
         "pagePath": "pages/restaurants/restaurants",
-        "text": "回味",
+        "text": "店记",
         "iconPath": "assets/tabbar/tab-memory.png",
         "selectedIconPath": "assets/tabbar/tab-memory-on.png"
       },
       {
         "pagePath": "pages/mine/mine",
-        "text": "小家",
+        "text": "小窝",
         "iconPath": "assets/tabbar/tab-home.png",
         "selectedIconPath": "assets/tabbar/tab-home-on.png"
       }

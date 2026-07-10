@@ -1,10 +1,10 @@
 <view class="page">
   <view class="hero">
     <view>
-      <view class="sticker">🍚 饭桌营业中</view>
+      <view class="sticker">🍚 今日饭卡</view>
       <view class="meta">今天 {{today}}</view>
-      <view class="title">{{profile.nickname ? profile.nickname + '，今天吃得怎么样' : '今天吃得怎么样'}}</view>
-      <view class="subtitle">给今天留个味道，明天就少纠结一点。</view>
+      <view class="title">{{profile.nickname ? profile.nickname + '，饭卡刷了吗' : '今天饭卡刷了吗'}}</view>
+      <view class="subtitle">轻轻打个卡，给今天的胃留一张小票。</view>
     </view>
     <view class="hero-face">^_^</view>
   </view>
@@ -12,13 +12,16 @@
   <view wx:if="{{!profile.nickname}}" class="card nickname-card soft-panel">
     <view class="section-title compact">先认识一下</view>
     <view class="subtitle">以后主页会这样称呼你，记录吃饭也更像自己的小本子。</view>
-    <input class="input form-gap" value="{{nicknameDraft}}" placeholder="例如：小周、阿辰、饭搭子" adjust-position="{{false}}" bindinput="onNicknameInput" />
+    <view class="icon-field form-gap">
+      <view class="field-icon">👋</view>
+      <input class="field-control" value="{{nicknameDraft}}" placeholder="例如：小周、阿辰、饭搭子" adjust-position="{{false}}" bindinput="onNicknameInput" />
+    </view>
     <view class="primary-button form-gap" bindtap="saveNickname">保存称呼</view>
   </view>
 
   <view class="card today-card">
     <view class="row">
-      <view class="section-title compact">今日饮食</view>
+      <view class="section-title compact">饭卡打卡</view>
       <view class="sticker green">{{todayMeals.length}} 餐已贴上</view>
     </view>
     <view class="meal-grid">
@@ -42,11 +45,14 @@
     <view class="row">
       <view>
         <view class="section-title compact">{{editingMealId ? '修改这一餐' : '记一餐'}}</view>
-        <view class="subtitle">{{editingMealId ? '改完后会保留原来的记录时间。' : '不用精确，像发一条只给自己看的饭桌动态。'}}</view>
+        <view class="subtitle">{{editingMealId ? '改完后会保留原来的记录时间。' : '不用精确，像给今天的饭卡盖个章。'}}</view>
       </view>
       <view wx:if="{{editingMealId}}" class="edit-badge">编辑中</view>
     </view>
-    <input class="input" value="{{form.title}}" placeholder="吃了什么？例如：烧烤、番茄牛肉汤" adjust-position="{{false}}" bindinput="onTitleInput" />
+    <view class="icon-field">
+      <view class="field-icon">🍽️</view>
+      <input class="field-control" value="{{form.title}}" placeholder="吃了什么？例如：烧烤、番茄牛肉汤" adjust-position="{{false}}" bindinput="onTitleInput" />
+    </view>
     <view class="companion-field">
       <view class="companion-icon">👥</view>
       <input class="companion-input" value="{{form.companion}}" placeholder="和谁一起吃？例如：对象、爸妈、同事" adjust-position="{{false}}" bindinput="onCompanionInput" />
@@ -60,7 +66,10 @@
         bindtap="selectCompanion"
       ><text class="chip-dot">＋</text>{{item}}</view>
     </view>
-    <input class="input feeling-input" value="{{form.note}}" placeholder="一句话感受，可选" adjust-position="{{false}}" bindinput="onNoteInput" />
+    <view class="icon-field feeling-input">
+      <view class="field-icon">💬</view>
+      <input class="field-control" value="{{form.note}}" placeholder="一句话感受，可选" adjust-position="{{false}}" bindinput="onNoteInput" />
+    </view>
     <view class="tag-label">常用描述</view>
     <view class="chip-list form-gap">
       <view
@@ -101,7 +110,7 @@
       </view>
     </view>
     <view wx:for="{{review.tips}}" wx:key="*this" class="tip">{{item}}</view>
-    <view class="secondary-button form-gap" bindtap="goCook">看看今晚吃什么</view>
+    <view class="secondary-button form-gap" bindtap="goCook">去菜灵感翻一套</view>
   </view>
 
   <view class="section-title">今天的记录</view>

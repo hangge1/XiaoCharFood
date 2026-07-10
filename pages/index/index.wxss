@@ -157,7 +157,8 @@
   margin-top: 20rpx;
 }
 
-.note-card .input {
+.note-card .input,
+.note-card .icon-field {
   margin-top: 16rpx;
 }
 

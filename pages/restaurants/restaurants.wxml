@@ -1,9 +1,9 @@
 <view class="page">
   <view class="restaurant-hero">
     <view>
-      <view class="sticker green">📍 回味雷达</view>
-      <view class="title">想起那家好吃的店</view>
-      <view class="subtitle">保存自己的体验，之后找店不用翻聊天记录。</view>
+      <view class="sticker green">📍 店记雷达</view>
+      <view class="title">好店别只靠脑子记</view>
+      <view class="subtitle">把吃过的饭店装进小本本，之后找店不用翻聊天记录。</view>
     </view>
   </view>
 
@@ -25,19 +25,22 @@
   </view>
 
   <view wx:if="{{mode === 'search'}}" class="card search-card">
-    <view class="section-title compact">找回餐厅</view>
+    <view class="section-title compact">找回店记</view>
     <view class="subtitle">输入后点搜索，也可以直接点下拉结果。</view>
     <view class="search-box">
-      <input
-        class="search-input"
-        placeholder="店名 / 菜品 / 备注"
-        adjust-position="{{false}}"
-        value="{{keyword}}"
-        confirm-type="search"
-        bindfocus="onSearchFocus"
-        bindconfirm="runSearch"
-        bindinput="onKeywordInput"
-      />
+      <view class="icon-field search-icon-field">
+        <view class="field-icon">🔎</view>
+        <input
+          class="field-control"
+          placeholder="店名 / 菜品 / 备注"
+          adjust-position="{{false}}"
+          value="{{keyword}}"
+          confirm-type="search"
+          bindfocus="onSearchFocus"
+          bindconfirm="runSearch"
+          bindinput="onKeywordInput"
+        />
+      </view>
       <view class="search-button" bindtap="runSearch">搜索</view>
     </view>
     <view wx:if="{{keyword}}" class="clear-search" bindtap="clearSearch">清空搜索</view>
@@ -69,9 +72,12 @@
   </view>
 
   <view wx:if="{{mode === 'create'}}" class="card create-card">
-    <view class="section-title compact">记录新餐厅</view>
+    <view class="section-title compact">新增店记</view>
     <view class="subtitle">像贴一张小票：先写店名就能保存，其他信息可以随手补。</view>
-    <input class="input" placeholder="店名" value="{{form.name}}" adjust-position="{{false}}" data-key="name" bindinput="onInput" />
+    <view class="icon-field">
+      <view class="field-icon">🏷️</view>
+      <input class="field-control" placeholder="店名" value="{{form.name}}" adjust-position="{{false}}" data-key="name" bindinput="onInput" />
+    </view>
     <view class="location-picker" bindtap="chooseRestaurantLocation">
       <view>
         <view class="location-title">{{form.address || '从地图选择餐厅地址'}}</view>
@@ -79,9 +85,18 @@
       </view>
       <view class="location-action">选择</view>
     </view>
-    <input class="input gap-small" placeholder="人均，例如 128" value="{{form.averageCost}}" adjust-position="{{false}}" data-key="averageCost" bindinput="onInput" />
-    <input class="input gap-small" placeholder="这次点了什么？" value="{{form.dishes}}" adjust-position="{{false}}" data-key="dishes" bindinput="onInput" />
-    <textarea class="textarea gap-small" placeholder="一句话评价，可选" value="{{form.note}}" adjust-position="{{false}}" data-key="note" bindinput="onInput" />
+    <view class="icon-field gap-small">
+      <view class="field-icon">💰</view>
+      <input class="field-control" placeholder="人均，例如 128" value="{{form.averageCost}}" adjust-position="{{false}}" data-key="averageCost" bindinput="onInput" />
+    </view>
+    <view class="icon-field gap-small">
+      <view class="field-icon">🍜</view>
+      <input class="field-control" placeholder="这次点了什么？" value="{{form.dishes}}" adjust-position="{{false}}" data-key="dishes" bindinput="onInput" />
+    </view>
+    <view class="icon-field textarea-field gap-small">
+      <view class="field-icon">💬</view>
+      <textarea class="field-textarea" placeholder="一句话评价，可选" value="{{form.note}}" adjust-position="{{false}}" data-key="note" bindinput="onInput" />
+    </view>
     <view class="chip-list gap">
       <view
         wx:for="{{sceneTags}}"
@@ -121,8 +136,8 @@
     </view>
   </view>
 
-  <view class="section-title">回味清单</view>
-  <view wx:if="{{restaurants.length === 0}}" class="empty card">还没有餐厅记忆。下次吃到不错的店，可以先简单记下来。</view>
+  <view class="section-title">店记清单</view>
+  <view wx:if="{{restaurants.length === 0}}" class="empty card">还没有店记。下次吃到不错的店，可以先简单记下来。</view>
   <view wx:for="{{restaurants}}" wx:key="id" class="card">
     <view class="row">
       <view>
