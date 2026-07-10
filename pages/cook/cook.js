@@ -1,7 +1,27 @@
 const store = require('../../utils/store.js')
 const recommender = require('../../utils/recommender.js')
 
-const QUICK_KEYWORDS = ['清淡', '省事', '家常', '川菜', '减肥', '增肌', '高蛋白', '少油', '微辣', '牛肉', '鸡蛋', '豆腐']
+const QUICK_KEYWORDS = [
+  { label: '清淡', icon: '🥬' },
+  { label: '省事', icon: '⚡' },
+  { label: '家常', icon: '🏠' },
+  { label: '川菜', icon: '🌶️' },
+  { label: '减肥', icon: '🥗' },
+  { label: '增肌', icon: '💪' },
+  { label: '高蛋白', icon: '🥚' },
+  { label: '少油', icon: '💧' },
+  { label: '微辣', icon: '🔥' },
+  { label: '牛肉', icon: '🥩' },
+  { label: '鸡蛋', icon: '🥚' },
+  { label: '豆腐', icon: '⬜' }
+]
+
+const SLOT_ICONS = {
+  早餐: '🥣',
+  午餐: '🍱',
+  晚餐: '🍲',
+  加餐: '🍓'
+}
 
 Page({
   data: {
@@ -16,9 +36,19 @@ Page({
   },
 
   refresh() {
+    const dayMenu = recommender.suggestDayMenu(this.data.keywordText)
     this.setData({
-      dayMenu: recommender.suggestDayMenu(this.data.keywordText),
+      dayMenu: this.decorateDayMenu(dayMenu),
       plans: store.getPlans()
+    })
+  },
+
+  decorateDayMenu(menu) {
+    if (!menu) return menu
+    return Object.assign({}, menu, {
+      meals: menu.meals.map(meal => Object.assign({}, meal, {
+        icon: SLOT_ICONS[meal.slot] || '🍽️'
+      }))
     })
   },
 

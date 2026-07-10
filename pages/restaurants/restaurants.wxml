@@ -9,9 +9,18 @@
 
   <view class="card">
     <view class="mode-switch">
-      <view class="mode-item {{mode === 'search' ? 'active' : ''}}" data-mode="search" bindtap="setMode">找去过的店</view>
-      <view class="mode-item {{mode === 'create' ? 'active' : ''}}" data-mode="create" bindtap="setMode">记录新餐厅</view>
-      <view class="mode-item {{mode === 'map' ? 'active' : ''}}" bindtap="locateNearby">附近地图</view>
+      <view class="mode-item {{mode === 'search' ? 'active' : ''}}" data-mode="search" bindtap="setMode">
+        <view class="mode-icon">🔎</view>
+        <view>找店</view>
+      </view>
+      <view class="mode-item {{mode === 'create' ? 'active' : ''}}" data-mode="create" bindtap="setMode">
+        <view class="mode-icon">🧾</view>
+        <view>记店</view>
+      </view>
+      <view class="mode-item {{mode === 'map' ? 'active' : ''}}" bindtap="locateNearby">
+        <view class="mode-icon">🗺️</view>
+        <view>地图</view>
+      </view>
     </view>
   </view>
 
@@ -21,7 +30,8 @@
     <view class="search-box">
       <input
         class="search-input"
-        placeholder="店名 / 菜品 / 备注，例如：火锅、吊龙"
+        placeholder="店名 / 菜品 / 备注"
+        adjust-position="{{false}}"
         value="{{keyword}}"
         confirm-type="search"
         bindfocus="onSearchFocus"
@@ -61,7 +71,7 @@
   <view wx:if="{{mode === 'create'}}" class="card create-card">
     <view class="section-title compact">记录新餐厅</view>
     <view class="subtitle">像贴一张小票：先写店名就能保存，其他信息可以随手补。</view>
-    <input class="input" placeholder="店名" value="{{form.name}}" data-key="name" bindinput="onInput" />
+    <input class="input" placeholder="店名" value="{{form.name}}" adjust-position="{{false}}" data-key="name" bindinput="onInput" />
     <view class="location-picker" bindtap="chooseRestaurantLocation">
       <view>
         <view class="location-title">{{form.address || '从地图选择餐厅地址'}}</view>
@@ -69,9 +79,9 @@
       </view>
       <view class="location-action">选择</view>
     </view>
-    <input class="input gap-small" placeholder="人均，例如 128" value="{{form.averageCost}}" data-key="averageCost" bindinput="onInput" />
-    <input class="input gap-small" placeholder="这次点了什么？" value="{{form.dishes}}" data-key="dishes" bindinput="onInput" />
-    <textarea class="textarea gap-small" placeholder="一句话评价，可选" value="{{form.note}}" data-key="note" bindinput="onInput" />
+    <input class="input gap-small" placeholder="人均，例如 128" value="{{form.averageCost}}" adjust-position="{{false}}" data-key="averageCost" bindinput="onInput" />
+    <input class="input gap-small" placeholder="这次点了什么？" value="{{form.dishes}}" adjust-position="{{false}}" data-key="dishes" bindinput="onInput" />
+    <textarea class="textarea gap-small" placeholder="一句话评价，可选" value="{{form.note}}" adjust-position="{{false}}" data-key="note" bindinput="onInput" />
     <view class="chip-list gap">
       <view
         wx:for="{{sceneTags}}"

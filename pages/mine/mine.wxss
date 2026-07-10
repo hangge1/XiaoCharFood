@@ -36,10 +36,23 @@
 }
 
 .stats > view {
-  padding: 18rpx 10rpx;
+  padding: 18rpx 10rpx 16rpx;
   border-radius: 22rpx;
   background: #FFFFFF;
   text-align: center;
+}
+
+.stat-icon {
+  width: 54rpx;
+  height: 54rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 6rpx;
+  border-radius: 20rpx;
+  background: #FFF3D9;
+  font-size: 30rpx;
+  box-shadow: inset 0 -4rpx 0 rgba(32, 37, 31, 0.04);
 }
 
 .stat-num {

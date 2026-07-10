@@ -11,17 +11,17 @@
   <view class="card soft-panel">
     <view class="section-title compact">今天的需求</view>
     <view class="subtitle">可以混着写：口味、已有食材、减肥、增肌、高蛋白、少油。</view>
-    <textarea class="textarea keyword-box" value="{{keywordText}}" placeholder="例如：清淡 鸡蛋 番茄 减肥 高蛋白" bindinput="onKeywordInput" />
+    <textarea class="textarea keyword-box" value="{{keywordText}}" placeholder="例如：清淡 鸡蛋 番茄 减肥 高蛋白" adjust-position="{{false}}" bindinput="onKeywordInput" />
 
     <view class="section-label">快捷关键词</view>
     <view class="chip-list">
       <view
         wx:for="{{quickKeywords}}"
-        wx:key="*this"
-        class="chip {{keywordText.indexOf(item) >= 0 ? 'active' : ''}}"
-        data-keyword="{{item}}"
+        wx:key="label"
+        class="chip keyword-chip {{keywordText.indexOf(item.label) >= 0 ? 'active' : ''}}"
+        data-keyword="{{item.label}}"
         bindtap="addKeyword"
-      >{{item}}</view>
+      ><text class="keyword-icon">{{item.icon}}</text>{{item.label}}</view>
     </view>
     <view class="primary-button gap" bindtap="generateDayMenu">生成一日菜单</view>
   </view>
@@ -31,7 +31,7 @@
   <view class="section-title">今日菜单贴</view>
   <view wx:for="{{dayMenu.meals}}" wx:key="slot" wx:for-index="idx" class="card recipe-card">
     <view class="row">
-      <view class="sticker green">{{item.slot}}</view>
+      <view class="sticker green meal-slot"><text class="slot-icon">{{item.icon}}</text>{{item.slot}}</view>
       <view class="meta">{{item.minutes}} 分钟</view>
     </view>
     <view class="recipe-title">{{item.name}}</view>

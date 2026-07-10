@@ -70,7 +70,14 @@ Page({
     wx.showToast({ title: '记住啦', icon: 'success' })
   },
 
+  hideKeyboard() {
+    if (wx.hideKeyboard) {
+      wx.hideKeyboard()
+    }
+  },
+
   selectMealType(e) {
+    this.hideKeyboard()
     this.setData({
       'form.mealType': e.currentTarget.dataset.type
     })
@@ -89,19 +96,33 @@ Page({
   },
 
   toggleTag(e) {
+    this.hideKeyboard()
     const tag = e.currentTarget.dataset.tag
     const tags = this.data.form.tags
+    const note = this.appendNoteToken(this.data.form.note, tag)
     this.setData({
       'form.tags': tags.includes(tag)
         ? tags.filter(item => item !== tag)
-        : tags.concat(tag)
+        : tags.concat(tag),
+      'form.note': note
     })
   },
 
   toggleIndulgent() {
+    this.hideKeyboard()
+    const nextIndulgent = !this.data.form.indulgent
     this.setData({
-      'form.indulgent': !this.data.form.indulgent
+      'form.indulgent': nextIndulgent,
+      'form.note': nextIndulgent
+        ? this.appendNoteToken(this.data.form.note, '放纵餐')
+        : this.data.form.note
     })
+  },
+
+  appendNoteToken(note, token) {
+    const current = `${note || ''}`.trim()
+    if (!token || current.includes(token)) return current
+    return current ? `${current} · ${token}` : token
   },
 
   resetMealForm() {

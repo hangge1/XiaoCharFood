@@ -12,7 +12,7 @@
   <view wx:if="{{!profile.nickname}}" class="card nickname-card soft-panel">
     <view class="section-title compact">先认识一下</view>
     <view class="subtitle">以后主页会这样称呼你，记录吃饭也更像自己的小本子。</view>
-    <input class="input form-gap" value="{{nicknameDraft}}" placeholder="例如：小周、阿辰、饭搭子" bindinput="onNicknameInput" />
+    <input class="input form-gap" value="{{nicknameDraft}}" placeholder="例如：小周、阿辰、饭搭子" adjust-position="{{false}}" bindinput="onNicknameInput" />
     <view class="primary-button form-gap" bindtap="saveNickname">保存称呼</view>
   </view>
 
@@ -46,18 +46,18 @@
       </view>
       <view wx:if="{{editingMealId}}" class="edit-badge">编辑中</view>
     </view>
-    <input class="input" value="{{form.title}}" placeholder="吃了什么？例如：烧烤、番茄牛肉汤" bindinput="onTitleInput" />
-    <input class="input feeling-input" value="{{form.note}}" placeholder="一句话感受，可选" bindinput="onNoteInput" />
+    <input class="input" value="{{form.title}}" placeholder="吃了什么？例如：烧烤、番茄牛肉汤" adjust-position="{{false}}" bindinput="onTitleInput" />
+    <input class="input feeling-input" value="{{form.note}}" placeholder="一句话感受，可选" adjust-position="{{false}}" bindinput="onNoteInput" />
     <view class="tag-label">常用描述</view>
     <view class="chip-list form-gap">
       <view
         wx:for="{{tags}}"
         wx:key="*this"
-        class="chip {{form.tags.indexOf(item) >= 0 ? 'active' : ''}}"
+        class="chip note-chip {{form.tags.indexOf(item) >= 0 ? 'active' : ''}}"
         bindtap="toggleTag"
         data-tag="{{item}}"
-      >{{item}}</view>
-      <view class="chip warn {{form.indulgent ? 'active' : ''}}" bindtap="toggleIndulgent">放纵餐</view>
+      ><text class="chip-dot">＋</text>{{item}}</view>
+      <view class="chip warn note-chip {{form.indulgent ? 'active' : ''}}" bindtap="toggleIndulgent"><text class="chip-dot">＋</text>放纵餐</view>
     </view>
     <view class="form-actions {{editingMealId ? 'with-side' : ''}}">
       <view class="primary-button action-main" bindtap="saveMeal">{{editingMealId ? '保存修改' : '保存记录'}}</view>
