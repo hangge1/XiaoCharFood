@@ -1,0 +1,44 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="38" fill="#20251F"/>
+  <rect x="12" y="12" width="366" height="820" rx="34" fill="#F7F8F3"/>
+  <text x="195" y="44" text-anchor="middle" font-family="Comic Sans MS, Microsoft YaHei, sans-serif" font-size="15" fill="#20251F">小馋饭记</text>
+  <g transform="translate(32 74)">
+    <rect width="108" height="32" rx="14" fill="#DDEFE8"/>
+    <text x="16" y="22" font-size="14" font-family="Microsoft YaHei, sans-serif" fill="#2F7D68">📍 店记雷达</text>
+    <text x="0" y="74" font-size="29" font-weight="700" font-family="Microsoft YaHei, sans-serif" fill="#20251F">好店别只靠脑子记</text>
+    <text x="0" y="106" font-size="14" font-family="Microsoft YaHei, sans-serif" fill="#5D675B">把吃过的饭店装进小本本。</text>
+  </g>
+  <g transform="translate(24 196)">
+    <rect width="342" height="92" rx="18" fill="#FFFFFF" stroke="#DDE4D7"/>
+    <g transform="translate(16 16)">
+      <rect width="96" height="60" rx="18" fill="#2F7D68"/><text x="48" y="28" text-anchor="middle" font-size="22">🔎</text><text x="48" y="48" text-anchor="middle" font-size="13" font-family="Microsoft YaHei, sans-serif" fill="#FFFFFF">找店</text>
+      <rect x="122" width="96" height="60" rx="18" fill="#EEF3EA"/><text x="170" y="28" text-anchor="middle" font-size="22">🧾</text><text x="170" y="48" text-anchor="middle" font-size="13" font-family="Microsoft YaHei, sans-serif" fill="#5D675B">记店</text>
+      <rect x="244" width="66" height="60" rx="18" fill="#EEF3EA"/><text x="277" y="28" text-anchor="middle" font-size="22">🗺️</text><text x="277" y="48" text-anchor="middle" font-size="13" font-family="Microsoft YaHei, sans-serif" fill="#5D675B">地图</text>
+    </g>
+  </g>
+  <rect x="24" y="310" width="342" height="160" rx="18" fill="#F5FBF7" stroke="#C9E0D6"/>
+  <text x="42" y="344" font-size="18" font-weight="700" font-family="Microsoft YaHei, sans-serif" fill="#20251F">找回店记</text>
+  <rect x="42" y="364" width="230" height="44" rx="22" fill="#FFFFFF" stroke="#DDE4D7"/>
+  <text x="58" y="392" font-size="14">🔎</text><text x="90" y="392" font-size="13" font-family="Microsoft YaHei, sans-serif" fill="#87907F">火锅 / 吊龙 / 约会</text>
+  <rect x="282" y="364" width="66" height="44" rx="22" fill="#2F7D68"/>
+  <text x="315" y="392" text-anchor="middle" font-size="14" font-weight="700" font-family="Microsoft YaHei, sans-serif" fill="#FFFFFF">搜索</text>
+  <rect x="42" y="426" width="106" height="28" rx="14" fill="#DDEFE8"/><text x="61" y="445" font-size="12" font-family="Microsoft YaHei, sans-serif" fill="#2F7D68">只看还想再去</text>
+  <text x="24" y="516" font-size="20" font-weight="700" font-family="Microsoft YaHei, sans-serif" fill="#20251F">店记清单</text>
+  <g transform="translate(24 536)">
+    <rect width="342" height="102" rx="18" fill="#FFFFFF" stroke="#DDE4D7"/>
+    <text x="18" y="34" font-size="21" font-weight="700" font-family="Microsoft YaHei, sans-serif" fill="#20251F">巷口牛肉火锅</text>
+    <text x="18" y="62" font-size="13" font-family="Microsoft YaHei, sans-serif" fill="#87907F">人均 128 · 还想再去</text>
+    <text x="18" y="86" font-size="13" font-family="Microsoft YaHei, sans-serif" fill="#5D675B">吊龙、牛肉丸，汤底清</text>
+    <rect x="278" y="22" width="44" height="32" rx="16" fill="#DDEFE8"/><text x="300" y="43" text-anchor="middle" font-size="12" font-family="Microsoft YaHei, sans-serif" fill="#2F7D68">地图</text>
+  </g>
+  <rect x="24" y="662" width="342" height="104" rx="18" fill="#F5FBF7" stroke="#A8D2C3"/>
+  <text x="42" y="696" font-size="18" font-weight="700" font-family="Microsoft YaHei, sans-serif" fill="#20251F">附近 5km 去过的店</text>
+  <text x="42" y="724" font-size="14" font-family="Microsoft YaHei, sans-serif" fill="#5D675B">有地址的店会出现在地图标注里。</text>
+  <text x="42" y="752" font-size="14" font-family="Microsoft YaHei, sans-serif" fill="#2F7D68">📍 3 家</text>
+  <g transform="translate(24 780)">
+    <text x="38" y="22" text-anchor="middle" font-size="18">🍚</text><text x="38" y="42" text-anchor="middle" font-size="11" font-family="Microsoft YaHei, sans-serif" fill="#87907F">饭卡</text>
+    <text x="125" y="22" text-anchor="middle" font-size="18">🥘</text><text x="125" y="42" text-anchor="middle" font-size="11" font-family="Microsoft YaHei, sans-serif" fill="#87907F">菜灵感</text>
+    <text x="214" y="22" text-anchor="middle" font-size="18">📍</text><text x="214" y="42" text-anchor="middle" font-size="11" font-family="Microsoft YaHei, sans-serif" fill="#2F7D68">店记</text>
+    <text x="304" y="22" text-anchor="middle" font-size="18">🏠</text><text x="304" y="42" text-anchor="middle" font-size="11" font-family="Microsoft YaHei, sans-serif" fill="#87907F">小窝</text>
+  </g>
+</svg>
