@@ -39,7 +39,7 @@ Backend API
         |     `-- profile
         |
         `-- Repository
-              +-- current: local JSON files for dev/single-node deploy
+              +-- current: Python stdlib HTTP service + local JSON files
               `-- future: PostgreSQL/MySQL
 ```
 
@@ -105,8 +105,8 @@ PUT    /api/sync/import
 
 ```powershell
 cd backend
-npm test
-npm start
+python -m unittest discover -s tests
+python -m src.server
 ```
 
 环境变量：
@@ -118,7 +118,7 @@ WECHAT_APP_ID=your_app_id
 WECHAT_APP_SECRET=your_app_secret
 ```
 
-此阶段适合验证 API、数据结构和小程序接入方式，不适合作为多人长期生产数据库。
+此阶段使用 Python 标准库实现 HTTP 服务和 JSON 文件存储，适合验证 API、数据结构和小程序接入方式，不适合作为多人长期生产数据库。API 合同稳定后，可以将 HTTP 层升级为 FastAPI，将 Repository 替换为 PostgreSQL/MySQL。
 
 ### 第二阶段：正式服务化
 
@@ -160,7 +160,7 @@ utils/repository.js
 
 ```powershell
 cd backend
-npm test
+python -m unittest discover -s tests
 ```
 
 当前小程序语法检查：
@@ -174,4 +174,3 @@ node --check pages/cook/cook.js
 node --check pages/restaurants/restaurants.js
 node --check pages/mine/mine.js
 ```
-

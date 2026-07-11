@@ -1,0 +1,2 @@
+"""XiaoCharFood standalone backend."""
+
