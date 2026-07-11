@@ -5,7 +5,8 @@
 小程序已经具备和 Python 后端联动的基础能力：
 
 - 启动时调用 `wx.login`，再尝试调用后端登录接口。
-- 开发环境未配置微信密钥时，前端使用本地 device id 作为临时 `X-User-Id`。
+- 登录成功后保存后端签发的 session token，后续请求使用 `Authorization: Bearer <token>`。
+- 开发环境未配置微信密钥时，前端通过 `/api/auth/dev-login` 用本地 device id 换取开发 token。
 - 页面写入仍然先落本地缓存，保证体验不被网络影响。
 - 后端可用时，小程序会自动同步完整数据快照。
 - 启动同步完成后，会刷新当前页面，让远端合并数据可见。
@@ -39,8 +40,9 @@ utils/backendConfig.js
 
 1. 用户操作立即写入 `wx.setStorageSync`。
 2. `utils/store.js` 触发 `syncManager.queueUpload`。
-3. 后台把完整快照上传到 `/api/sync/import`。
-4. 小程序启动时从 `/api/sync/export` 拉取远端快照。
+3. `utils/apiClient.js` 携带后端 session token。
+4. 后台把完整快照上传到 `/api/sync/import`。
+5. 小程序启动时从 `/api/sync/export` 拉取远端快照。
 5. `syncManager.mergeSnapshots` 按 `updatedAt` 合并本地和远端数据。
 6. 删除记录通过 `deletedRecords` tombstone 防止旧数据被远端恢复。
 
@@ -63,7 +65,7 @@ backend/src/repository.py # JSON 文件 Repository
 - 后端部署到可公网访问的 HTTPS 域名。
 - 微信公众平台配置合法 request 域名。
 - 配置 `WECHAT_APP_ID` 和 `WECHAT_APP_SECRET`。
-- 后端登录接口从微信 `code` 换取真实 `openid`。
-- 用后端签发的 session/token 替代开发期 `X-User-Id` 信任模式。
+- 配置强随机 `SESSION_SECRET`。
+- 后端登录接口从微信 `code` 换取真实 `openid`，当前接口已预留该路径。
+- 生产环境关闭 `ALLOW_DEV_AUTH`，禁止继续使用开发登录。
 - Repository 从 JSON 文件迁移到 PostgreSQL 或 MySQL。
-

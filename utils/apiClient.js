@@ -2,6 +2,7 @@ const config = require('./backendConfig.js')
 
 const STORAGE_KEYS = {
   backendUserId: 'xcf:backendUserId',
+  backendToken: 'xcf:backendToken',
   deviceId: 'xcf:deviceId'
 }
 
@@ -40,21 +41,37 @@ function setUserId(userId) {
   }
 }
 
+function getToken() {
+  return getStored(STORAGE_KEYS.backendToken)
+}
+
+function setToken(token) {
+  if (token) {
+    setStored(STORAGE_KEYS.backendToken, token)
+  }
+}
+
 function request(path, options = {}) {
   if (!config.enabled) {
     return Promise.reject(new Error('backend_disabled'))
   }
 
   return new Promise((resolve, reject) => {
+    const token = getToken()
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-User-Id': getUserId()
+    }
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
+    }
+
     wx.request({
       url: `${config.baseUrl}${path}`,
       method: options.method || 'GET',
       data: options.data || {},
       timeout: config.timeout,
-      header: Object.assign({
-        'Content-Type': 'application/json',
-        'X-User-Id': getUserId()
-      }, options.header || {}),
+      header: Object.assign(headers, options.header || {}),
       success: res => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           resolve(res.data)
@@ -73,7 +90,7 @@ function request(path, options = {}) {
 
 function login(code) {
   if (!code) {
-    return Promise.resolve({ id: getUserId(), devFallback: true })
+    return devLogin()
   }
 
   return request('/api/auth/wechat-login', {
@@ -81,17 +98,38 @@ function login(code) {
     data: { code }
   }).then(data => {
     const user = data && data.user
+    if (data && data.token) {
+      setToken(data.token)
+    }
     if (user && user.id) {
       setUserId(user.id)
       return user
     }
-    return { id: getUserId(), devFallback: true }
+    return devLogin()
   }).catch(error => {
     if (error.statusCode === 501 || error.message === 'backend_disabled') {
-      return { id: getUserId(), devFallback: true }
+      return devLogin()
     }
     throw error
   })
+}
+
+function devLogin() {
+  const deviceId = getDeviceId()
+  return request('/api/auth/dev-login', {
+    method: 'POST',
+    data: { deviceId }
+  }).then(data => {
+    if (data && data.token) {
+      setToken(data.token)
+    }
+    const user = data && data.user
+    if (user && user.id) {
+      setUserId(user.id)
+      return user
+    }
+    return { id: deviceId, devFallback: true }
+  }).catch(() => ({ id: deviceId, devFallback: true }))
 }
 
 function health() {
@@ -116,4 +154,3 @@ module.exports = {
   importSnapshot,
   getUserId
 }
-

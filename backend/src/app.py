@@ -6,6 +6,7 @@ from http.server import BaseHTTPRequestHandler
 from typing import Any
 from urllib.parse import unquote, urlparse
 
+from .auth import AuthError, SessionService
 from .repository import ARRAY_COLLECTIONS, SINGLETON_COLLECTIONS, FileRepository
 from .wechat_client import exchange_code
 
@@ -19,6 +20,8 @@ RESOURCE_TO_COLLECTION = {
 
 
 def make_handler(repository: FileRepository, config):
+    session_service = SessionService(config.session_secret, config.session_ttl_seconds)
+
     class XiaoCharFoodHandler(BaseHTTPRequestHandler):
         server_version = "XiaoCharFoodBackend/0.1"
 
@@ -51,6 +54,10 @@ def make_handler(repository: FileRepository, config):
                     self._handle_wechat_login()
                     return
 
+                if self.command == "POST" and path == "/api/auth/dev-login":
+                    self._handle_dev_login()
+                    return
+
                 if self.command == "GET" and path == "/api/sync/export":
                     self._send_json(HTTPStatus.OK, repository.export_user(self._user_id()))
                     return
@@ -75,9 +82,11 @@ def make_handler(repository: FileRepository, config):
                     self._handle_array(collection, record_id)
                     return
 
-                self._send_json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
+                    self._send_json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
             except json.JSONDecodeError:
                 self._send_json(HTTPStatus.BAD_REQUEST, {"error": "invalid_json"})
+            except AuthError as error:
+                self._send_json(HTTPStatus.UNAUTHORIZED, {"error": str(error)})
             except Exception as error:
                 self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "internal_error", "message": str(error)})
 
@@ -92,13 +101,38 @@ def make_handler(repository: FileRepository, config):
                 return
 
             session = exchange_code(config.wechat_app_id, config.wechat_app_secret, code)
+            token = session_service.issue(session["openid"], {"auth": "wechat"})
             self._send_json(
                 HTTPStatus.OK,
                 {
                     "user": {
                         "id": session["openid"],
                         "unionId": session.get("unionid", ""),
-                    }
+                    },
+                    "token": token,
+                },
+            )
+
+        def _handle_dev_login(self) -> None:
+            if not config.allow_dev_auth:
+                self._send_json(HTTPStatus.NOT_FOUND, {"error": "not_found"})
+                return
+
+            body = self._read_json()
+            user_id = body.get("deviceId") or body.get("userId")
+            if not user_id:
+                self._send_json(HTTPStatus.BAD_REQUEST, {"error": "missing_device_id"})
+                return
+
+            token = session_service.issue(user_id, {"auth": "dev"})
+            self._send_json(
+                HTTPStatus.OK,
+                {
+                    "user": {
+                        "id": user_id,
+                        "devFallback": True,
+                    },
+                    "token": token,
                 },
             )
 
@@ -145,13 +179,21 @@ def make_handler(repository: FileRepository, config):
             return json.loads(raw) if raw.strip() else {}
 
         def _user_id(self) -> str:
-            return self.headers.get("X-User-Id") or "anonymous"
+            authorization = self.headers.get("Authorization", "")
+            if authorization.startswith("Bearer "):
+                token = authorization.removeprefix("Bearer ").strip()
+                return session_service.verify(token)["sub"]
+
+            if config.allow_dev_auth:
+                return self.headers.get("X-User-Id") or "anonymous"
+
+            raise AuthError("missing_bearer_token")
 
         def _send_json(self, status: HTTPStatus, payload: Any) -> None:
             body = b"" if status == HTTPStatus.NO_CONTENT else json.dumps(payload, ensure_ascii=False).encode("utf-8")
             self.send_response(status)
             self.send_header("Access-Control-Allow-Origin", "*")
-            self.send_header("Access-Control-Allow-Headers", "Content-Type, X-User-Id")
+            self.send_header("Access-Control-Allow-Headers", "Authorization, Content-Type, X-User-Id")
             self.send_header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -160,4 +202,3 @@ def make_handler(repository: FileRepository, config):
                 self.wfile.write(body)
 
     return XiaoCharFoodHandler
-

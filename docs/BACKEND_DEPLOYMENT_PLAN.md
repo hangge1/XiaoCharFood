@@ -63,6 +63,7 @@ Backend API
 ```text
 GET    /health
 POST   /api/auth/wechat-login
+POST   /api/auth/dev-login
 
 GET    /api/meals
 POST   /api/meals
@@ -97,7 +98,7 @@ GET    /api/sync/export
 PUT    /api/sync/import
 ```
 
-开发阶段用 `X-User-Id` 请求头隔离用户数据。小程序已在 `utils/apiClient.js` 中封装请求逻辑；开发环境未配置微信密钥时，会使用本地 device id 作为临时用户标识。正式接入微信登录后，应由后端通过 `wx.login` 的 `code` 换取 `openid`，再由服务端签发自己的登录态。小程序前端不允许保存或使用 `WECHAT_APP_SECRET`。
+后端会签发 session token，业务接口优先使用 `Authorization: Bearer <token>` 识别用户。开发阶段可以通过 `/api/auth/dev-login` 使用本地 device id 换取开发 token，并保留 `X-User-Id` 作为本地调试兜底。正式接入微信登录后，应由后端通过 `wx.login` 的 `code` 换取 `openid`，再由服务端签发自己的登录态。小程序前端不允许保存或使用 `WECHAT_APP_SECRET`。
 
 ## 部署路径
 
@@ -116,6 +117,9 @@ PORT=3001
 DATA_DIR=./data
 WECHAT_APP_ID=your_app_id
 WECHAT_APP_SECRET=your_app_secret
+SESSION_SECRET=replace_with_a_long_random_secret
+SESSION_TTL_SECONDS=2592000
+ALLOW_DEV_AUTH=true
 ```
 
 此阶段使用 Python 标准库实现 HTTP 服务和 JSON 文件存储，适合验证 API、数据结构和小程序接入方式，不适合作为多人长期生产数据库。API 合同稳定后，可以将 HTTP 层升级为 FastAPI，将 Repository 替换为 PostgreSQL/MySQL。

@@ -16,6 +16,9 @@ from src.repository import FileRepository
 class TestConfig:
     wechat_app_id = ""
     wechat_app_secret = ""
+    session_secret = "test-secret"
+    session_ttl_seconds = 3600
+    allow_dev_auth = True
 
 
 class ApiTestCase(unittest.TestCase):
@@ -120,6 +123,35 @@ class ApiTestCase(unittest.TestCase):
         _, exported = self.request("/api/sync/export")
         self.assertEqual(exported["profile"]["nickname"], "小馋")
         self.assertEqual(exported["deletedRecords"][0]["collection"], "meals")
+
+    def test_dev_login_issues_bearer_token_for_sync(self) -> None:
+        status, login = self.request(
+            "/api/auth/dev-login",
+            method="POST",
+            body={"deviceId": "device-test"},
+            user_id="ignored-header",
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(login["user"]["id"], "device-test")
+        self.assertTrue(login["token"])
+
+        payload = json.dumps({"profile": {"nickname": "token-user"}}).encode("utf-8")
+        request = Request(
+            f"{self.base_url}/api/sync/import",
+            data=payload,
+            method="PUT",
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {login['token']}",
+                "X-User-Id": "wrong-user",
+            },
+        )
+        with urlopen(request, timeout=5) as response:
+            self.assertEqual(response.status, 200)
+
+        status, exported = self.request("/api/sync/export", user_id="device-test")
+        self.assertEqual(status, 200)
+        self.assertEqual(exported["profile"]["nickname"], "token-user")
 
 
 if __name__ == "__main__":
