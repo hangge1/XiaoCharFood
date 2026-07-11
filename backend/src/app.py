@@ -50,6 +50,15 @@ def make_handler(repository: FileRepository, config):
                     self._send_json(HTTPStatus.OK, {"status": "ok", "service": "xiaocharfood-backend"})
                     return
 
+                if self.command == "GET" and path == "/ready":
+                    self._send_json(HTTPStatus.OK, {
+                        "status": "ready",
+                        "environment": config.app_env,
+                        "storageBackend": config.storage_backend,
+                        "devAuthEnabled": config.allow_dev_auth,
+                    })
+                    return
+
                 if self.command == "POST" and path == "/api/auth/wechat-login":
                     self._handle_wechat_login()
                     return

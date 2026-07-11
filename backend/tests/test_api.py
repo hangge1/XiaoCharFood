@@ -21,6 +21,7 @@ class TestConfig:
     session_secret = "test-secret"
     session_ttl_seconds = 3600
     allow_dev_auth = True
+    storage_backend = "test"
 
 
 class ApiTestCase(unittest.TestCase):
@@ -67,6 +68,13 @@ class ApiTestCase(unittest.TestCase):
         status, body = self.request("/health")
         self.assertEqual(status, 200)
         self.assertEqual(body["status"], "ok")
+
+    def test_ready_endpoint_reports_runtime_state(self) -> None:
+        status, body = self.request("/ready")
+        self.assertEqual(status, 200)
+        self.assertEqual(body["status"], "ready")
+        self.assertEqual(body["environment"], "development")
+        self.assertTrue(body["devAuthEnabled"])
 
     def test_meal_records_are_isolated_by_user_id(self) -> None:
         status, created = self.request(

@@ -62,6 +62,7 @@ Backend API
 
 ```text
 GET    /health
+GET    /ready
 POST   /api/auth/wechat-login
 POST   /api/auth/dev-login
 

@@ -20,6 +20,13 @@ Windows convenience scripts:
 .\scripts\health_check.ps1
 ```
 
+Runtime probes:
+
+```text
+GET /health  # process liveness
+GET /ready   # environment, storage backend, dev auth state
+```
+
 ## Environment
 
 ```text
