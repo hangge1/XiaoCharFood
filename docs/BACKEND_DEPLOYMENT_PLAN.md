@@ -2,21 +2,21 @@
 
 ## 目标
 
-XiaoCharFood 当前是纯微信小程序前端，所有业务数据保存在 `utils/store.js` 管理的本地缓存中。本阶段的目标是新增一个可以单独部署的后端工程，但不改变现有小程序运行逻辑。
+XiaoCharFood 已具备 Python 独立后端和本地开发联动能力。小程序仍然保持本地优先体验，所有业务数据先写入 `utils/store.js` 管理的本地缓存；后端可用时再自动同步快照。
 
 后端建设分为两条线：
 
-- 当前阶段：建立独立后端骨架、API 合同、基础测试和部署说明。
-- 后续阶段：小程序通过数据仓储层逐步接入后端，实现多设备同步、家庭共享、图片存储和 AI 推荐能力。
+- 当前阶段：建立独立 Python 后端、API 合同、基础测试、本地前后端同步和部署说明。
+- 后续阶段：完成真实微信登录态、数据库持久化、家庭共享、图片存储和 AI 推荐能力。
 
 ## 当前边界
 
 本次调整遵守以下约束：
 
 - 不修改小程序页面调用方式。
-- 不替换 `utils/store.js` 的本地存储逻辑。
+- 不破坏 `utils/store.js` 的本地优先存储逻辑。
 - 不引入微信云开发作为长期后端。
-- 后端先保持轻量、可运行、可测试，后续再替换持久化实现。
+- 后端先保持轻量、可运行、可测试，当前用 JSON 文件存储，后续再替换为数据库。
 
 ## 推荐架构
 
@@ -97,7 +97,7 @@ GET    /api/sync/export
 PUT    /api/sync/import
 ```
 
-开发阶段用 `X-User-Id` 请求头隔离用户数据。正式接入微信登录后，应由后端通过 `wx.login` 的 `code` 换取 `openid`，再由服务端签发自己的登录态。小程序前端不允许保存或使用 `WECHAT_APP_SECRET`。
+开发阶段用 `X-User-Id` 请求头隔离用户数据。小程序已在 `utils/apiClient.js` 中封装请求逻辑；开发环境未配置微信密钥时，会使用本地 device id 作为临时用户标识。正式接入微信登录后，应由后端通过 `wx.login` 的 `code` 换取 `openid`，再由服务端签发自己的登录态。小程序前端不允许保存或使用 `WECHAT_APP_SECRET`。
 
 ## 部署路径
 
@@ -120,6 +120,12 @@ WECHAT_APP_SECRET=your_app_secret
 
 此阶段使用 Python 标准库实现 HTTP 服务和 JSON 文件存储，适合验证 API、数据结构和小程序接入方式，不适合作为多人长期生产数据库。API 合同稳定后，可以将 HTTP 层升级为 FastAPI，将 Repository 替换为 PostgreSQL/MySQL。
 
+小程序开发环境默认请求地址在 `utils/backendConfig.js`：
+
+```text
+http://127.0.0.1:3001
+```
+
 ### 第二阶段：正式服务化
 
 将 Repository 从 JSON 文件替换为数据库：
@@ -140,6 +146,14 @@ utils/repository.js
 
 页面继续调用稳定的数据接口，由 `repository.js` 负责本地优先、远端同步、冲突合并和失败降级。
 
+当前已经落地的第一版接入文件：
+
+```text
+utils/backendConfig.js
+utils/apiClient.js
+utils/syncManager.js
+```
+
 ## 同步策略
 
 推荐采用本地优先：
@@ -148,7 +162,7 @@ utils/repository.js
 - 后台尝试同步到后端。
 - 每条记录保留 `id`、`createdAt`、`updatedAt`。
 - 冲突第一阶段使用 `updatedAt` 后写覆盖。
-- 删除操作后续需要增加 tombstone，避免多端恢复已删除数据。
+- 删除操作使用 `deletedRecords` tombstone，避免多端恢复已删除数据。
 
 ## 微信小程序上线注意点
 
@@ -161,6 +175,12 @@ utils/repository.js
 ```powershell
 cd backend
 python -m unittest discover -s tests
+```
+
+前端同步合并测试：
+
+```powershell
+node tests/syncManager.test.js
 ```
 
 当前小程序语法检查：

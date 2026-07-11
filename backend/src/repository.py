@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 
-ARRAY_COLLECTIONS = {"meals", "plans", "restaurants", "restaurantVisits"}
+ARRAY_COLLECTIONS = {"meals", "plans", "restaurants", "restaurantVisits", "deletedRecords"}
 SINGLETON_COLLECTIONS = {"preferences", "profile"}
 
 
@@ -19,6 +19,7 @@ def empty_user_data() -> dict[str, Any]:
         "plans": [],
         "restaurants": [],
         "restaurantVisits": [],
+        "deletedRecords": [],
         "preferences": {},
         "profile": {},
     }
@@ -134,4 +135,3 @@ class FileRepository:
     def _assert_singleton_collection(collection: str) -> None:
         if collection not in SINGLETON_COLLECTIONS:
             raise ValueError(f"Unknown singleton collection: {collection}")
-

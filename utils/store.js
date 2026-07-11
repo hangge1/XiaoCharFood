@@ -1,10 +1,13 @@
+const syncManager = require('./syncManager.js')
+
 const STORAGE_KEYS = {
   meals: 'xcf:meals',
   preferences: 'xcf:preferences',
   plans: 'xcf:plans',
   restaurants: 'xcf:restaurants',
   restaurantVisits: 'xcf:restaurantVisits',
-  profile: 'xcf:profile'
+  profile: 'xcf:profile',
+  deletedRecords: 'xcf:deletedRecords'
 }
 
 const DEFAULT_PREFERENCES = {
@@ -51,6 +54,24 @@ function write(key, value) {
   return value
 }
 
+function scheduleSync() {
+  syncManager.queueUpload(getSnapshot)
+}
+
+function getDeletedRecords() {
+  return read(STORAGE_KEYS.deletedRecords, [])
+}
+
+function recordDeleted(collection, id) {
+  if (!collection || !id) return
+  const records = getDeletedRecords()
+  write(STORAGE_KEYS.deletedRecords, [{
+    collection,
+    id,
+    deletedAt: nowString()
+  }, ...records])
+}
+
 function getMeals() {
   return read(STORAGE_KEYS.meals, [])
 }
@@ -83,12 +104,15 @@ function saveMeal(input) {
     ? meals.map(item => item.id === meal.id ? meal : item)
     : [meal, ...meals]
   write(STORAGE_KEYS.meals, next)
+  scheduleSync()
   return meal
 }
 
 function deleteMeal(id) {
+  recordDeleted('meals', id)
   const next = getMeals().filter(item => item.id !== id)
   write(STORAGE_KEYS.meals, next)
+  scheduleSync()
   return next
 }
 
@@ -142,7 +166,9 @@ function getPreferences() {
 }
 
 function savePreferences(input) {
-  return write(STORAGE_KEYS.preferences, Object.assign({}, getPreferences(), input, { updatedAt: nowString() }))
+  const preferences = write(STORAGE_KEYS.preferences, Object.assign({}, getPreferences(), input, { updatedAt: nowString() }))
+  scheduleSync()
+  return preferences
 }
 
 function getPlans() {
@@ -167,6 +193,7 @@ function savePlan(input) {
     ? plans.map(item => item.id === plan.id ? plan : item)
     : [plan, ...plans]
   write(STORAGE_KEYS.plans, next)
+  scheduleSync()
   return plan
 }
 
@@ -198,6 +225,7 @@ function saveRestaurant(input) {
     ? restaurants.map(item => item.id === restaurant.id ? restaurant : item)
     : [restaurant, ...restaurants]
   write(STORAGE_KEYS.restaurants, next)
+  scheduleSync()
   return restaurant
 }
 
@@ -218,6 +246,7 @@ function saveRestaurantVisit(input) {
     ? visits.map(item => item.id === visit.id ? visit : item)
     : [visit, ...visits]
   write(STORAGE_KEYS.restaurantVisits, next)
+  scheduleSync()
   return visit
 }
 
@@ -272,7 +301,16 @@ function getNearbyRestaurants(center, radiusKm = 5) {
 }
 
 function clearAll() {
-  Object.keys(STORAGE_KEYS).forEach(key => wx.removeStorageSync(STORAGE_KEYS[key]))
+  getMeals().forEach(item => recordDeleted('meals', item.id))
+  getPlans().forEach(item => recordDeleted('plans', item.id))
+  getRestaurants().forEach(item => recordDeleted('restaurants', item.id))
+  getRestaurantVisits().forEach(item => recordDeleted('restaurantVisits', item.id))
+  Object.keys(STORAGE_KEYS).forEach(key => {
+    if (key !== 'deletedRecords') {
+      wx.removeStorageSync(STORAGE_KEYS[key])
+    }
+  })
+  scheduleSync()
 }
 
 function getProfile() {
@@ -282,7 +320,36 @@ function getProfile() {
 }
 
 function saveProfile(input) {
-  return write(STORAGE_KEYS.profile, Object.assign({}, getProfile(), input, { updatedAt: nowString() }))
+  const profile = write(STORAGE_KEYS.profile, Object.assign({}, getProfile(), input, { updatedAt: nowString() }))
+  scheduleSync()
+  return profile
+}
+
+function getSnapshot() {
+  return {
+    meals: getMeals(),
+    preferences: getPreferences(),
+    plans: getPlans(),
+    restaurants: getRestaurants(),
+    restaurantVisits: getRestaurantVisits(),
+    profile: getProfile(),
+    deletedRecords: getDeletedRecords()
+  }
+}
+
+function replaceSnapshot(snapshot = {}, options = {}) {
+  write(STORAGE_KEYS.meals, Array.isArray(snapshot.meals) ? snapshot.meals : [])
+  write(STORAGE_KEYS.preferences, snapshot.preferences || {})
+  write(STORAGE_KEYS.plans, Array.isArray(snapshot.plans) ? snapshot.plans : [])
+  write(STORAGE_KEYS.restaurants, Array.isArray(snapshot.restaurants) ? snapshot.restaurants : [])
+  write(STORAGE_KEYS.restaurantVisits, Array.isArray(snapshot.restaurantVisits) ? snapshot.restaurantVisits : [])
+  write(STORAGE_KEYS.profile, snapshot.profile || {})
+  write(STORAGE_KEYS.deletedRecords, Array.isArray(snapshot.deletedRecords) ? snapshot.deletedRecords : [])
+
+  if (!options.skipSync) {
+    scheduleSync()
+  }
+  return getSnapshot()
 }
 
 module.exports = {
@@ -307,5 +374,7 @@ module.exports = {
   distanceKm,
   clearAll,
   getProfile,
-  saveProfile
+  saveProfile,
+  getSnapshot,
+  replaceSnapshot
 }

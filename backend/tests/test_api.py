@@ -102,7 +102,25 @@ class ApiTestCase(unittest.TestCase):
         _, restaurants = self.request("/api/restaurants")
         self.assertEqual(len(restaurants), 0)
 
+    def test_sync_import_export_round_trips_snapshot(self) -> None:
+        snapshot = {
+            "meals": [{"id": "meal_1", "title": "面", "updatedAt": "2026-07-11 10:00:00"}],
+            "plans": [],
+            "restaurants": [],
+            "restaurantVisits": [],
+            "deletedRecords": [{"collection": "meals", "id": "meal_0", "deletedAt": "2026-07-11 09:00:00"}],
+            "preferences": {"defaultPeople": 2},
+            "profile": {"nickname": "小馋"},
+        }
+        status, imported = self.request("/api/sync/import", method="PUT", body=snapshot)
+        self.assertEqual(status, 200)
+        self.assertEqual(imported["meals"][0]["title"], "面")
+        self.assertEqual(imported["deletedRecords"][0]["id"], "meal_0")
+
+        _, exported = self.request("/api/sync/export")
+        self.assertEqual(exported["profile"]["nickname"], "小馋")
+        self.assertEqual(exported["deletedRecords"][0]["collection"], "meals")
+
 
 if __name__ == "__main__":
     unittest.main()
-
