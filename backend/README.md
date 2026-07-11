@@ -11,6 +11,13 @@ python -m unittest discover -s tests
 python -m src.server
 ```
 
+Windows convenience scripts:
+
+```powershell
+.\scripts\start.ps1
+.\scripts\health_check.ps1
+```
+
 ## Environment
 
 ```text
@@ -31,6 +38,8 @@ ALLOW_DEV_AUTH=true
 
 - `json`：默认本地 JSON 文件，适合调试。
 - `sqlite`：单机部署建议选项，使用 `SQLITE_PATH` 指定数据库文件。
+
+复制 `.env.example` 为 `.env` 后可以用文件管理本地运行配置；`.env` 不应提交。
 
 小程序端联动说明见：
 
