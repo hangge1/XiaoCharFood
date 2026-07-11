@@ -11,6 +11,7 @@ from urllib.request import Request, urlopen
 
 from src.app import make_handler
 from src.repository import FileRepository
+from src.sqlite_repository import SqliteRepository
 
 
 class TestConfig:
@@ -22,14 +23,19 @@ class TestConfig:
 
 
 class ApiTestCase(unittest.TestCase):
+    repository_cls = FileRepository
+
     def setUp(self) -> None:
         self.temp_dir = tempfile.TemporaryDirectory()
-        repository = FileRepository(Path(self.temp_dir.name))
+        repository = self.create_repository()
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(repository, TestConfig()))
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
         host, port = self.server.server_address
         self.base_url = f"http://{host}:{port}"
+
+    def create_repository(self):
+        return self.repository_cls(Path(self.temp_dir.name))
 
     def tearDown(self) -> None:
         self.server.shutdown()
@@ -156,3 +162,10 @@ class ApiTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SqliteApiTestCase(ApiTestCase):
+    repository_cls = SqliteRepository
+
+    def create_repository(self):
+        return SqliteRepository(Path(self.temp_dir.name) / "test.sqlite3")

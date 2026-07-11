@@ -56,6 +56,8 @@ utils/syncManager.js      # 快照同步、合并、删除标记处理
 utils/store.js            # 本地数据层，写入后触发后台上传
 backend/src/app.py        # Python HTTP API
 backend/src/repository.py # JSON 文件 Repository
+backend/src/sqlite_repository.py # SQLite Repository
+backend/src/repository_factory.py # 存储后端选择
 ```
 
 ## 生产部署前必须补齐
@@ -68,4 +70,5 @@ backend/src/repository.py # JSON 文件 Repository
 - 配置强随机 `SESSION_SECRET`。
 - 后端登录接口从微信 `code` 换取真实 `openid`，当前接口已预留该路径。
 - 生产环境关闭 `ALLOW_DEV_AUTH`，禁止继续使用开发登录。
-- Repository 从 JSON 文件迁移到 PostgreSQL 或 MySQL。
+- 单机部署可以先使用 `STORAGE_BACKEND=sqlite`。
+- 多人长期生产使用时，将 Repository 从 SQLite 迁移到 PostgreSQL 或 MySQL。

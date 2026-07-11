@@ -39,7 +39,7 @@ Backend API
         |     `-- profile
         |
         `-- Repository
-              +-- current: Python stdlib HTTP service + local JSON files
+              +-- current: JSON files or SQLite
               `-- future: PostgreSQL/MySQL
 ```
 
@@ -115,6 +115,8 @@ python -m src.server
 ```text
 PORT=3001
 DATA_DIR=./data
+STORAGE_BACKEND=json
+SQLITE_PATH=./data/xiaocharfood.sqlite3
 WECHAT_APP_ID=your_app_id
 WECHAT_APP_SECRET=your_app_secret
 SESSION_SECRET=replace_with_a_long_random_secret
@@ -122,7 +124,7 @@ SESSION_TTL_SECONDS=2592000
 ALLOW_DEV_AUTH=true
 ```
 
-此阶段使用 Python 标准库实现 HTTP 服务和 JSON 文件存储，适合验证 API、数据结构和小程序接入方式，不适合作为多人长期生产数据库。API 合同稳定后，可以将 HTTP 层升级为 FastAPI，将 Repository 替换为 PostgreSQL/MySQL。
+此阶段使用 Python 标准库实现 HTTP 服务，并支持 JSON 文件与 SQLite 两种 Repository。JSON 适合本地调试；SQLite 更适合单机部署验证。API 合同稳定后，可以将 HTTP 层升级为 FastAPI，将 Repository 替换为 PostgreSQL/MySQL。
 
 小程序开发环境默认请求地址在 `utils/backendConfig.js`：
 
@@ -134,6 +136,7 @@ http://127.0.0.1:3001
 
 将 Repository 从 JSON 文件替换为数据库：
 
+- SQLite：当前已支持，适合单机部署验证，不适合作为多人长期生产数据库。
 - PostgreSQL：推荐长期使用，适合共享空间、统计、查询和后续 AI 特征沉淀。
 - MySQL：也可行，部署门槛低。
 - Redis：只作为缓存或会话存储，不作为主数据源。

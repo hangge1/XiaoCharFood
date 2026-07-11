@@ -14,6 +14,8 @@ class Config:
     session_secret: str
     session_ttl_seconds: int
     allow_dev_auth: bool
+    storage_backend: str
+    sqlite_path: Path
 
 
 def load_config() -> Config:
@@ -25,4 +27,6 @@ def load_config() -> Config:
         session_secret=os.getenv("SESSION_SECRET", "dev-only-change-me"),
         session_ttl_seconds=int(os.getenv("SESSION_TTL_SECONDS", str(60 * 60 * 24 * 30))),
         allow_dev_auth=os.getenv("ALLOW_DEV_AUTH", "true").lower() in {"1", "true", "yes", "on"},
+        storage_backend=os.getenv("STORAGE_BACKEND", "json").lower(),
+        sqlite_path=Path(os.getenv("SQLITE_PATH", Path(__file__).resolve().parent.parent / "data" / "xiaocharfood.sqlite3")).resolve(),
     )
