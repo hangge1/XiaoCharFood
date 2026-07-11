@@ -4,4 +4,4 @@ $backendRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $backendRoot
 
 python -m src.check_config
-python -m src.server
+

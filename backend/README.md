@@ -8,6 +8,7 @@
 
 ```powershell
 python -m unittest discover -s tests
+python -m src.check_config
 python -m src.server
 ```
 
@@ -15,12 +16,14 @@ Windows convenience scripts:
 
 ```powershell
 .\scripts\start.ps1
+.\scripts\check_config.ps1
 .\scripts\health_check.ps1
 ```
 
 ## Environment
 
 ```text
+APP_ENV=development
 PORT=3001
 DATA_DIR=./data
 STORAGE_BACKEND=json
@@ -31,6 +34,19 @@ SESSION_SECRET=replace_with_a_long_random_secret
 SESSION_TTL_SECONDS=2592000
 ALLOW_DEV_AUTH=true
 ```
+
+Production hardening:
+
+```text
+APP_ENV=production
+ALLOW_DEV_AUTH=false
+STORAGE_BACKEND=sqlite
+SESSION_SECRET=<at least 32 random characters>
+WECHAT_APP_ID=<your app id>
+WECHAT_APP_SECRET=<your app secret>
+```
+
+`python -m src.check_config` 会在生产模式下阻止默认 secret、开发登录、缺失微信密钥和 JSON 存储。
 
 后端会签发 session token，业务接口优先使用 `Authorization: Bearer <token>` 识别用户。开发阶段可以开启 `ALLOW_DEV_AUTH=true`，通过 `/api/auth/dev-login` 为本地 device id 签发 token，并保留 `X-User-Id` 作为本地调试兜底。生产环境应关闭开发认证，设置强随机 `SESSION_SECRET`，并通过微信登录获取 openid。
 

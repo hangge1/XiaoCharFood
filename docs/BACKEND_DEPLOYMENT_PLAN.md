@@ -113,6 +113,7 @@ python -m src.server
 环境变量：
 
 ```text
+APP_ENV=development
 PORT=3001
 DATA_DIR=./data
 STORAGE_BACKEND=json
@@ -127,6 +128,15 @@ ALLOW_DEV_AUTH=true
 此阶段使用 Python 标准库实现 HTTP 服务，并支持 JSON 文件与 SQLite 两种 Repository。JSON 适合本地调试；SQLite 更适合单机部署验证。API 合同稳定后，可以将 HTTP 层升级为 FastAPI，将 Repository 替换为 PostgreSQL/MySQL。
 
 后端会自动读取 `backend/.env`，可以从 `backend/.env.example` 复制一份作为本地配置文件。`.env` 不能提交。
+
+生产环境必须通过配置校验：
+
+```powershell
+cd backend
+python -m src.check_config
+```
+
+`APP_ENV=production` 时会阻止默认 `SESSION_SECRET`、开发登录、缺失微信密钥和 JSON 存储。
 
 小程序开发环境默认请求地址在 `utils/backendConfig.js`：
 

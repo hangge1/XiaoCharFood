@@ -15,6 +15,7 @@ from src.sqlite_repository import SqliteRepository
 
 
 class TestConfig:
+    app_env = "development"
     wechat_app_id = ""
     wechat_app_secret = ""
     session_secret = "test-secret"

@@ -70,5 +70,6 @@ backend/src/repository_factory.py # 存储后端选择
 - 配置强随机 `SESSION_SECRET`。
 - 后端登录接口从微信 `code` 换取真实 `openid`，当前接口已预留该路径。
 - 生产环境关闭 `ALLOW_DEV_AUTH`，禁止继续使用开发登录。
+- 生产环境设置 `APP_ENV=production`，并通过 `python -m src.check_config`。
 - 单机部署可以先使用 `STORAGE_BACKEND=sqlite`。
 - 多人长期生产使用时，将 Repository 从 SQLite 迁移到 PostgreSQL 或 MySQL。
